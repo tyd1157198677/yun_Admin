@@ -18,7 +18,8 @@
           </div>
         </div>
         <div class="btn">
-          <a-button type="primary" size="large" @click.native="openRedPacket">启用红包</a-button>
+          <a-button type="primary" v-if="key==1" size="large" @click.native="openRedPacket">启用红包</a-button>
+          <a-button type="primary" v-else style="background:rgba(100,101,102,1);border:none" size="large" @click.native="openRedPacket">启用红包</a-button>
           <a-modal
             title="启用红包"
             v-model="isShow"
@@ -35,7 +36,7 @@
               <div  style="display:flex;margin-top:24px;height:40px;line-height:40px"><span style="width:140px;color:rgba(48,49,51,1);font-size:14px;">单笔提现红最低金额</span><a-input type="text" placeholder="请输入金额" style="width:50%;height:40px;" /></div>
               <div style="margin:20px 50px 0px 0px;color:red;font-size:12px;text-align:right">{{baoliu}}</div>
           </a-modal> 
-          <a-button class="addBlackList" @click.native="addBlackList" type="primary" size="large">加入黑名单</a-button>
+          <a-button class="addBlackList" @click.native="addBlackList" type="primary" size="large">{{bleck}}</a-button>
           <a-button type="danger" size="large" @click.native="remove">删除用户</a-button>
         </div>
       </div>
@@ -180,8 +181,8 @@
             <a-table :columns="columns2" :dataSource="data2" :pagination="false" rowKey="key"></a-table>
           </div>
         </a-tab-pane>
-        <a-button type="primary" v-if="num==1" slot="tabBarExtraContent" @click="add_genjin">添加跟进</a-button>
-        
+        <a-button type="primary" :class="key=='2'? 'btns':''" v-if="num==1" slot="tabBarExtraContent" @click="add_genjin">添加跟进</a-button>
+         <!-- <a-button v-else type="primary" style="background:rgba(100,101,102,1);border:none" size="large" @click.native="openRedPacket">添加跟进</a-button> -->
       </a-tabs>
       <a-modal
             title="添加跟进"
@@ -453,6 +454,8 @@ export default {
         
       ],
       user_detail:{},//用户详情
+      key:this.$route.query.key,
+      bleck:"加入黑名单",
       num: "1",
       baoliu:"金额保留两位小数：0.00",//保留两位小数
       isShow: false,//红包弹框
@@ -467,9 +470,17 @@ export default {
   },
   created(){
     this.get_detail()
+    this.changeColor()
+    console.log(this.key);
+    
   },
   methods: {
     //编辑用户
+    changeColor(){
+      if (this.key=="2") {
+        this.bleck="移除黑名单"
+      }
+    },
     editeUser() {
       this.$router.push({
         path: "AddUser",
@@ -687,6 +698,10 @@ export default {
   }
   .footer {
     height: 100%;
+    .btns{
+      background:rgba(100,101,102,1);
+      border: none;
+    }
     .gj_record {
       padding-bottom: 100px;
       .user {
@@ -794,6 +809,7 @@ export default {
       color: rgba(48, 49, 51, 1);
       margin-left: 12px;
     }
+    
   }
 }
 </style>

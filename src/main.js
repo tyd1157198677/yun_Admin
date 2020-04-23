@@ -2,9 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import axios from 'axios'
 import 'normalize.css/normalize.css'
 //ant组件按需引入
 import { Button,Layout,Dropdown,Menu,Select,Input,Col,Row,Table,Icon,Tabs,Tag,Divider,Form,FormModel,Pagination,Breadcrumb,Tree,Empty,Modal,Radio,DatePicker,Switch,Cascader,Avatar} from 'ant-design-vue';
+axios.defaults.baseURL = "https://www.kchuangqi.com/Api/"
+// Vue.prototype.GLOBALURL1 = "https://www.kchuangqi.com/Api/";
+Vue.prototype.$http = axios
 Vue.use(Button)
 Vue.use(Layout)
 Vue.use(Menu)

@@ -196,7 +196,8 @@ export default {
     }
     .btn {
       margin: 2.6% 0%;
-      width: 8%;
+      width:97px;
+      height: 40px;
     }
   }
   .body {

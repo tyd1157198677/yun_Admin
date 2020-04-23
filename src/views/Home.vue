@@ -154,6 +154,7 @@ export default {
     .logo {
       text-align: center;
       margin: 16px;
+      height: 30px;
       font-size: 22px;
       font-weight: 400;
       color: rgba(255, 255, 255, 1);

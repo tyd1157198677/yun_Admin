@@ -29,10 +29,11 @@
               </div>
 
               <div class="search_right">
-                <a-input class="search_input" size="large" placeholder="用户名/手机号/备注">
+                <a-input class="search_input" size="large" v-model="queryInfo" placeholder="用户名/手机号/备注">
                   <a-icon slot="prefix" type="search" style="fontSize:15px;color:#909399FF" />
                 </a-input>
                 <a-button class="search_btn" type="primary">搜索</a-button>
+                <!-- <a-button class="search_btn" type="primary" @click="getUserList">搜索</a-button> -->
               </div>
             </div>
           </div>
@@ -155,7 +156,7 @@
           label="试用时间"
           :colon="false"
         >
-          <a-select placeholder="请选择试用时间" v-model="privilegeForm.trialTime" style="width: 60%;">
+          <a-select placeholder="请选择试用时间" v-model="privilegeForm.trialTime" style="width: 60%;margin-left:10px">
             <a-select-option value="7">7天</a-select-option>
             <a-select-option value="15">15天</a-select-option>
             <a-select-option value="30">30天</a-select-option>
@@ -170,7 +171,7 @@
         >
           <a-input
             v-model="privilegeForm.rechargeAmount"
-            style="width: 60%;"
+            style="width: 60%;margin-left:10px"
             type="text"
             placeholder="请输入价格"
           />
@@ -186,7 +187,7 @@
             show-time
             type="date"
             placeholder="请选择日期"
-            style="width: 60%;"
+            style="width: 60%;margin-left:10px"
           >
           <a-icon type="caret-down" slot="suffixIcon" />
           </a-date-picker>
@@ -523,6 +524,8 @@ export default {
           note: "--"
         }
       ],
+      queryInfo:"",//搜索信息
+      keys:"1",//用户还是黑名单
       //分页
       pageCount: 80,
       currentPage: 1,//当前选择的页数,默认为第一页
@@ -594,9 +597,22 @@ export default {
     };
   },
   methods: {
+    //   获取用户列表
+    // async getUserList() {
+    //   const { data: res } = await this.$http.get(`goods`, {
+    //     params: this.queryInfo
+    //   });
+    //   console.log(res);
+    //   this.info(res, "获取列表失败", "获取列表成功");
+    //   this.data = res.data.goods;
+    //   this.total = res.data.total;
+    // },
     //tab切换
-    callback(key) {
+    async callback(key) {
+      this.keys=key
       console.log(key);
+      let { data: res } = await this.$http.post("get_countrycodes")
+      console.log(res.data);
     },
     //添加用户
     addUser() {
@@ -604,9 +620,17 @@ export default {
         path: "AddUser"
       });
     },
+    //搜索
+    searchRes(info) {
+      return this.data.filter(item => {
+        if (item.userName.includes(info)) {
+          return item;
+        }
+      });
+    },
     //用户列表查看客户详情
     showDetail(info) {
-      this.$router.push({ name: "userDetail", query: { info } });
+      this.$router.push({ name: "userDetail", query: { info , key:this.keys} });
     },
     //用户列表控制充值开关
     recharge(info) {
@@ -646,7 +670,7 @@ export default {
     },
     //黑名单查看客户详情
     showDetail1(info) {
-      this.$router.push({ path: "userDetail" });
+      this.$router.push({ path: "userDetail" ,query: { info , key:this.keys} });
     },
     //黑名单控制充值开关
     recharge1(info) {
@@ -683,6 +707,9 @@ export default {
       //     this.data = data;
       //   });
     }
+  },
+  created(){
+    // this.getUserList()
   },
   watch: {
     pageSize(val) {
@@ -721,9 +748,9 @@ export default {
       display: flex;
       // justify-content: space-between;
       .search_left {
-        // flex: 7;
-        width: 50%;
-        .select_identity {
+        // width: 50%;
+        flex:5;
+        .select_identity,.select_attribution {
           width: 160px;
           height: 40px;
         }
@@ -732,13 +759,9 @@ export default {
           height: 40px;
           margin: 0% 4%;
         }
-        .select_attribution {
-          width: 160px;
-          height: 40px;
-        }
       }
       .search_right {
-        // flex: 1;
+        flex: 5;
         width: 50%;
         text-align: right;
         // float: right;

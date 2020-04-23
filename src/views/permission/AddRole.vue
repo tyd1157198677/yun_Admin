@@ -10,9 +10,9 @@
       <a-form-model ref="ruleForm" :model="ruleForm" :rules="rules" v-bind="layout">
         <!-- prop属性值为表单验证规则rules里的绑定 -->
         <!-- 账号 -->
-        <a-form-model-item has-feedback label="角色名称" prop="checkRole" :colon="false" ref="name">
+        <a-form-model-item has-feedback label="角色名称" prop="roleName" :colon="false" ref="name">
           <a-input
-            v-model="ruleForm.checkRole"
+            v-model="ruleForm.roleName"
             placeholder="请输入角色名称"
             type="text"
             @change="getvalue"
@@ -27,13 +27,17 @@
         </a-form-model-item>
 
         <!-- 权限设置 -->
+        <!-- defaultExpandedKeys：默认展开指定的树节点 -->
+        <!-- defaultSelectedKeys：默认选中的树节点 -->
+        <!-- defaultCheckedKeys：默认选中复选框的树节点 -->
         <p class="title">权限设置</p>
         <a-tree
           checkable
           :treeData="treeData"
-          :defaultExpandedKeys="['0-0-0']"
-          :defaultSelectedKeys="['0-0-0']"
-          :defaultCheckedKeys="['0-0-0']"
+          :defaultExpandedKeys="['0-0','0-0-0']"
+          :defaultCheckedKeys="ruleForm.ruleSet"
+          @select="this.onSelect"
+          @check="this.onCheck"
         >
           <span slot="title0000" style="color: #1890ff">添加角色</span>
           <span slot="title0001" style="color: #1890ff">编辑角色</span>
@@ -48,11 +52,9 @@
     </div>
   </div>
 </template>
-
 <script>
 import { validator } from "@/antUI/module.js";
 export default {
-  
   data() {
     //树形图数据
     const treeData = [
@@ -88,12 +90,14 @@ export default {
     return {
       treeData, //树形图
       ruleForm: {
-        checkRole: "",
-        roleMiaoshu:""
+        roleName: "",//角色名字
+        roleMiaoshu:"",//角色描述
+        ruleSet:['0-0-0-1']//权限设置
+
       },
       //表单验证规则
       rules: {
-        checkRole: [
+        roleName: [
           { validator: validateRole, required: true, trigger: "blur" },
           { min: 2, max: 8, message: "长度在 3 到 8 个字符", trigger: "blur" }
         ]
@@ -112,11 +116,27 @@ export default {
     },
     //保存
     sive() {
-      console.log(this.ruleForm);
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          console.log(this.ruleForm);
+        } else {
+         return console.log('error submit!!');
+        }
+      });
+      
     },
     //取消
     quxiao() {
-      // this.ruleForm=""
+
+    },
+
+    onSelect(selectedKeys, info) {
+      console.log('selected', selectedKeys, info);
+    },
+    //当前选中的key值和选中节点的信息
+    onCheck(checkedKeys, info) {
+      console.log('onCheck', checkedKeys, info);
+      this.ruleForm.ruleSet=checkedKeys
     },
   }
 };
@@ -154,13 +174,13 @@ export default {
     }
   .title {
     font-size: 14px;
-    width: 20%;
+    width: 100%;
     height: 20px;
     padding-left: 10px;
     border-left: 3px solid #2b75edff;
   }
   .form {
-    width: 36%;
+    width: 40%;
     height: 82%;
   }
   .sub {

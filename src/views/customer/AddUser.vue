@@ -35,12 +35,14 @@
                 class="upload_btn"
                 name="file"
                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                @click="uploadPic"
+                :beforeUpload="beforeUpload"
+                @change="handleChange"
               >
                 <a-button type="primary">上传</a-button>
+                <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M</span>
               </a-upload>
               <!-- <a-button class="upload_btn" @click="uploadPic" type="primary">上传</a-button> -->
-              <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M</span>
+              
             </div>
           </div>
         </a-form-model-item>
@@ -107,6 +109,11 @@
 import { FormModel, Upload } from "ant-design-vue";
 import { validator } from "@/antUI/module.js";
 import Submit from "@/components/Submit";
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener('load', () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 export default {
   components: {
     Submit,
@@ -228,7 +235,31 @@ export default {
   },
   methods: {
     //上传图片
-    uploadPic() {},
+    // uploadPic() {},
+     handleChange(info) {
+      if (info.file.status === 'uploading') {
+        this.loading = true;
+        return;
+      }
+      if (info.file.status === 'done') {
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, imageUrl => {
+          this.imageUrl = imageUrl;
+          this.loading = false;
+        });
+      }
+    },
+    beforeUpload(file) {
+      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+      if (!isJpgOrPng) {
+        this.$message.error('You can only upload JPG file!');
+      }
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        this.$message.error('Image must smaller than 2MB!');
+      }
+      return isJpgOrPng && isLt2M;
+    },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -283,24 +314,24 @@ export default {
     }
     .upload {
       display: flex;
-      img {
-        width: 120px;
-        height: 120px;
-      }
-      //   justify-content: space-between;
       .upload_left {
         width: 120px;
         height: 120px;
+        img {
+        width: 120px;
+        height: 120px;
+      }
       }
       .upload_right {
         width: 100%;
-        display: flex;
-        flex-direction: column;
         margin-left: 20px;
+        padding-top: 15px;
         .upload_btn {
-          width: 30%;
+          width: 50%;
         }
         .upload_title {
+          display: block;
+          margin-top: 30px;
           font-size: 12px;
           font-weight: 400;
           color: rgba(144, 147, 153, 1);

@@ -22,7 +22,7 @@ const routes = [{
         name: 'permission',
         component: () => import('@/views/permission/RoleMangement.vue'),
         meta: {
-          title: '用户管理'
+          title: '权限管理'
         },
         redirect: 'permission/ManagementRole',
         children: [
