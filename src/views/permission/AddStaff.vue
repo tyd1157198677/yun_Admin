@@ -24,7 +24,10 @@
         <!-- 上传头像 -->
         <a-form-model-item has-feedback label="头像" :colon="false">
           <div class="upload">
-            <img class="upload_left" :src="ruleForm.url" />
+            <div class="img">
+              <img class="upload_left" :src="ruleForm.url" />
+            </div>
+            
             <div class="upload_right">
               <a-upload
                 class="upload_btn"
@@ -331,28 +334,28 @@ export default {
       padding-left: 10px;
       font-size: 14px;
       font-weight: 500;
+      height:16px ;
       color: rgba(48, 49, 51, 1);
       border-left: 3px solid #2b75edff;
+      line-height: 16px;
     }
     .upload {
       display: flex;
-      .upload_left {
+      .img{
+        .upload_left{
         width: 120px;
         height: 120px;
-        img{
-          width: 120px;
-        height: 120px;
-        }
+      }
       }
       .upload_right {
-        width: 100%;
+        padding-top: 15px;
+        width: 60%;
         margin-left: 20px;
         .upload_btn {
           width: 50%;
         }
         .btn{
           display: block;
-          
         }
         .upload_title {
           margin-top: 40px;

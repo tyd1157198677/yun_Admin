@@ -453,14 +453,32 @@ export default {
         }
         
       ],
-      user_detail:{},//用户详情
-      key:this.$route.query.key,
-      bleck:"加入黑名单",
-      num: "1",
+      user_detail:{
+        userNike:"",//昵称
+        account:"",//账号
+        name:"",//姓名
+        sex:"",//性别
+        phone:"",//手机号
+        tequan_user:"",//特权用户
+        give_money:"",//赠送余额
+        industry:"",//行业
+        job:"",//职位
+        company:"",//公司
+        end_time:"",//到期时间
+        balance_time:"",//余额到期
+        palce:"",//地区
+        email:"",//邮箱
+        weixin:"",//微信
+        balance:"",//余额
+        beizhu:""//备注
+      },//用户详情
+      key:this.$route.query.key,//key为1时时用户，为2时是黑名单
+      bleck:"加入黑名单",//key为1时加入黑名单，为2时是移除黑名单
+      num: "1",//为1时是跟进记录，显示添加跟进
       baoliu:"金额保留两位小数：0.00",//保留两位小数
       isShow: false,//红包弹框
       isShow1:false,//跟进弹框
-      genjin_content:"",
+      genjin_content:"",//跟进内容
       //红包弹框金额
       redPacketForm: {
         minMoney: "",

@@ -29,7 +29,9 @@
         <!-- 上传头像 -->
         <a-form-model-item has-feedback label="头像" :colon="false">
           <div class="upload">
-            <img class="upload_left" :src="ruleForm.url" />
+            <div class="img">
+              <img class="upload_left" :src="ruleForm.url" />
+            </div>
             <div class="upload_right">
               <a-upload
                 class="upload_btn"
@@ -135,6 +137,7 @@ export default {
     });
     //验证器off
     return {
+      user_contents:{},
       ruleForm: {
         account: "", //账号
         name: "", //姓名
@@ -233,9 +236,17 @@ export default {
       ]
     };
   },
+  created(){
+    this.user_content()
+  },
   methods: {
     //上传图片
     // uploadPic() {},
+    //编辑时获取用户详情
+    user_content(){
+     this.user_content= this.$route.query.info
+     console.log(this.user_contents);
+    },
      handleChange(info) {
       if (info.file.status === 'uploading') {
         this.loading = true;
@@ -311,20 +322,21 @@ export default {
       font-weight: 500;
       color: rgba(48, 49, 51, 1);
       border-left: 3px solid #2b75edff;
+      height: 16px;
+      line-height: 16px;
     }
     .upload {
       display: flex;
-      .upload_left {
+      .img{
+        img{
         width: 120px;
         height: 120px;
-        img {
-        width: 120px;
-        height: 120px;
+        }
       }
-      }
+      
       .upload_right {
-        width: 100%;
-        margin-left: 20px;
+        width: 60%;
+        margin-right: 30px;
         padding-top: 15px;
         .upload_btn {
           width: 50%;
