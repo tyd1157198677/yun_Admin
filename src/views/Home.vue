@@ -107,11 +107,11 @@ export default {
       let routerObj = {
         "1-1": { name: "ManagementRole" }, //角色管理
         "1-2": { name: "ManagementStaff" }, //员工管理
-        "2-1": { name: "customer" }, //用户管理
-        "2-2": "",
-        "2-3": "",
-        "2-4": "",
-        "2-5": ""
+        "2-1": { name: "userList" }, //用户管理
+        "2-2": { name: "AgentMangement" },//代理商管理
+        "2-3": { name: "TeacherMangement" },//讲师管理
+        "2-4": { name: "PresidentMangement" },//总裁管理
+        "2-5": { name: "PromoterMangement" },//推广员管理
       };
       routerObj[currentKey] ? this.jumpRouter(routerObj[currentKey]) : false;
     },

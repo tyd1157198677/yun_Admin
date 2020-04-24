@@ -24,39 +24,22 @@
         <!-- 上传头像 -->
         <a-form-model-item has-feedback label="头像" :colon="false">
           <div class="upload">
-            <div class="img">
-              <img class="upload_left" :src="ruleForm.url" />
-            </div>
-            
-            <div class="upload_right">
-              <a-upload
-                class="upload_btn"
-                name="file"
-                :action="ruleForm.UploadUrl"
-                :beforeUpload="beforeUpload"
-                @change="handleChange"
-              >
-                <a-button type="primary" class="btn">上传</a-button>
-                <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M不上传时会有默认头像，员工可自己修改</span>
-              </a-upload>
-             
-            </div>
+            <a-upload
+              class="upload_btn"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture-card"
+              :fileList="fileList"
+              @preview="handlePreview"
+              @change="handleChange"
+            >
+              <a-button type="primary" class="btn">上传</a-button>
+              <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M不上传时会有默认头像，员工可自己修改</span>
+            </a-upload>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+              <img alt="example" style="width: 100%" :src="previewImage" />
+            </a-modal>
           </div>
-          <!-- <a-upload
-            name="avatar"
-            listType="picture-card"
-            class="avatar-uploader"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            :beforeUpload="beforeUpload"
-            @change="handleChange"
-          >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" />
-            <a-button type="primary">上传</a-button>
-            <div v-else>
-              <a-icon :type="loading ? 'loading' : 'plus'" />
-              <div class="ant-upload-text">Upload</div>
-            </div>
-          </a-upload> -->
+          
         </a-form-model-item>
         <!-- 简介 -->
         <a-form-model-item has-feedback label="简介" :colon="false">
@@ -71,7 +54,7 @@
         <!-- 权限设置 -->
         <p class="title">权限设置</p>
         <a-form-model-item label="角色" :colon="false" prop="region">
-          <a-select v-model="ruleForm.region" placeholder="请输入角色" style @change="handleChange">
+          <a-select v-model="ruleForm.region" placeholder="请输入角色" style @change="choseRole">
             <a-select-option value="1">Jack</a-select-option>
             <a-select-option value="2">Lucy</a-select-option>
             <a-select-option value="3">Disabled</a-select-option>
@@ -129,10 +112,13 @@ const treeData = [
     ]
   }
 ];
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
 export default {
   components: {
@@ -155,8 +141,17 @@ export default {
     });
     //验证器off
     return {
+      previewVisible: false,
+      previewImage: "",
+      fileList: [
+        {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: require("@/assets/img/head_upload@2x.png")
+        }
+      ],
       treeData,
-      loading: false,
       imageUrl: require("@/assets/img/head_upload@2x.png"),
       ruleForm: {
         account: "", //账号
@@ -249,29 +244,41 @@ export default {
   methods: {
     //上传图片
     // uploadPic() {},
-     handleChange(info) {
-      if (info.file.status === 'uploading') {
-        this.loading = true;
-        return;
-      }
-      if (info.file.status === 'done') {
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, imageUrl => {
-          this.imageUrl = imageUrl;
-          this.loading = false;
-        });
-      }
+    //  handleChange(info) {
+    //   if (info.file.status === 'uploading') {
+    //     this.loading = true;
+    //     return;
+    //   }
+    //   if (info.file.status === 'done') {
+    //     getBase64(info.file.originFileObj, imageUrl => {
+    //       this.imageUrl = imageUrl;
+    //       this.loading = false;
+    //     });
+    //   }
+    // },
+    // beforeUpload(file) {
+    //   const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    //   if (!isJpgOrPng) {
+    //     this.$message.error('You can only upload JPG file!');
+    //   }
+    //   const isLt2M = file.size / 1024 / 1024 < 2;
+    //   if (!isLt2M) {
+    //     this.$message.error('Image must smaller than 2MB!');
+    //   }
+    //   return isJpgOrPng && isLt2M;
+    // },
+    handleCancel() {
+      this.previewVisible = false;
     },
-    beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG file!');
+    async handlePreview(file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
       }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.$message.error('Image must smaller than 2MB!');
-      }
-      return isJpgOrPng && isLt2M;
+      this.previewImage = file.url || file.preview;
+      this.previewVisible = true;
+    },
+    handleChange({ file, fileList }) {
+      this.fileList = [file];
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -311,17 +318,12 @@ export default {
       // this.ruleForm=""
     },
     //选择角色
-    handleChange(value) {
+    choseRole(value) {
       console.log(`selected ${value}`);
     }
   }
 };
 </script>
-<style lang="less">
-.ant-form-item-label {
-  margin: 0 20px;
-}
-</style>
 <style lang="less" socped>
 .AddEmployees {
   width: 100%;
@@ -339,32 +341,7 @@ export default {
       border-left: 3px solid #2b75edff;
       line-height: 16px;
     }
-    .upload {
-      display: flex;
-      .img{
-        .upload_left{
-        width: 120px;
-        height: 120px;
-      }
-      }
-      .upload_right {
-        padding-top: 15px;
-        width: 60%;
-        margin-left: 20px;
-        .upload_btn {
-          width: 50%;
-        }
-        .btn{
-          display: block;
-        }
-        .upload_title {
-          margin-top: 40px;
-          display: block;
-          font-size: 12px;
-          color: rgba(144, 147, 153, 1);
-        }
-      }
-    }
+    
     .beizhu {
       margin-bottom: 84px;
     }

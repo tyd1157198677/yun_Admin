@@ -1,12 +1,22 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
+import Login from '@/views/Login.vue'
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
     path: '/',
-    redirect: '/home' //这里用重定向设置默认选中的路由,即点击'/'路径时把'/about' 替换为'/'
+    redirect: '/login' //这里用重定向设置默认选中的路由,即点击'/'路径时把'/about' 替换为'/'
+  },
+  {
+    path: '/login',
+    name: 'login',
+    meta: {
+      title: '登录'
+    },
+    component:Login,
   },
   {
     path: '/home',
@@ -15,6 +25,7 @@ const routes = [{
     meta: {
       title: '首页'
     },
+    redirect: 'home/customer',
     children: [
       //权限管理on
       {
@@ -60,10 +71,7 @@ const routes = [{
           },
         ],
       },
-      
-      
       //权限管理off
-
 
       //客户管理on
       {
@@ -106,6 +114,38 @@ const routes = [{
             component: () => import('@/views/customer/AddUser.vue'),
             meta: {
               title: '添加用户'
+            }
+          },
+          {
+            path: 'AgentMangement', 
+            name: 'AgentMangement',
+            component: () => import('@/views/customer/AgentMangement.vue'),
+            meta: {
+              title: '代理商管理'
+            }
+          },
+          {
+            path: 'TeacherMangement', 
+            name: 'TeacherMangement',
+            component: () => import('@/views/customer/TeacherMangement.vue'),
+            meta: {
+              title: '讲师管理'
+            }
+          },
+          {
+            path: 'PresidentMangement', 
+            name: 'PresidentMangement',
+            component: () => import('@/views/customer/PresidentMangement.vue'),
+            meta: {
+              title: '总裁管理'
+            }
+          },
+          {
+            path: 'PromoterMangement', 
+            name: 'PromoterMangement',
+            component: () => import('@/views/customer/PromoterMangement.vue'),
+            meta: {
+              title: '推广员管理'
             }
           }
         ],

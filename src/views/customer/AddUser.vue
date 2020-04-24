@@ -21,7 +21,7 @@
         </a-form-model-item>
         <!-- 性别 -->
         <a-form-model-item label="性别" :colon="false">
-          <a-radio-group v-model.trim="ruleForm.resource">
+          <a-radio-group v-model.trim="ruleForm.sex">
             <a-radio value="1" style="margin-right:50px">男</a-radio>
             <a-radio value="2">女</a-radio>
           </a-radio-group>
@@ -29,28 +29,25 @@
         <!-- 上传头像 -->
         <a-form-model-item has-feedback label="头像" :colon="false">
           <div class="upload">
-            <div class="img">
-              <img class="upload_left" :src="ruleForm.url" />
-            </div>
-            <div class="upload_right">
-              <a-upload
-                class="upload_btn"
-                name="file"
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                :beforeUpload="beforeUpload"
-                @change="handleChange"
-              >
-                <a-button type="primary">上传</a-button>
-                <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M</span>
-              </a-upload>
-              <!-- <a-button class="upload_btn" @click="uploadPic" type="primary">上传</a-button> -->
-              
-            </div>
+            <a-upload
+              class="upload_btn"
+              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              listType="picture-card"
+              :fileList="fileList"
+              @preview="handlePreview"
+              @change="handleChange"
+            >
+              <a-button type="primary" class="btn">上传</a-button>
+              <span class="upload_title">建议尺寸120*120px，JPG、PNG、JPEG格式，图片小于3M不上传时会有默认头像，员工可自己修改</span>
+            </a-upload>
+            <a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+              <img alt="example" style="width: 100%" :src="previewImage" />
+            </a-modal>
           </div>
         </a-form-model-item>
         <!-- 特权 -->
         <a-form-model-item label="特权" :colon="false">
-          <a-switch v-model="ruleForm.tequan" />
+          <a-switch v-model="ruleForm.tequan_user" />
         </a-form-model-item>
         <!-- 联系方式 -->
         <p class="title">联系方式</p>
@@ -111,10 +108,13 @@
 import { FormModel, Upload } from "ant-design-vue";
 import { validator } from "@/antUI/module.js";
 import Submit from "@/components/Submit";
-function getBase64(img, callback) {
-  const reader = new FileReader();
-  reader.addEventListener('load', () => callback(reader.result));
-  reader.readAsDataURL(img);
+function getBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = error => reject(error);
+  });
 }
 export default {
   components: {
@@ -137,13 +137,24 @@ export default {
     });
     //验证器off
     return {
-      user_contents:{},
+      //头像上传
+      previewVisible: false,
+      previewImage: "",
+      fileList: [
+        {
+          uid: "-1",
+          name: "image.png",
+          status: "done",
+          url: require("@/assets/img/head_upload@2x.png")
+        }
+      ],
+      // ruleForm:this.$route.query.info,
       ruleForm: {
         account: "", //账号
         name: "", //姓名
-        resource: "", //性别
+        sex: "2", //性别
         url: require("@/assets/img/head_upload@2x.png"),
-        tequan: "",
+        tequan_user: true,
         phone: "",
         weixin: "",
         email: "",
@@ -237,39 +248,30 @@ export default {
     };
   },
   created(){
-    this.user_content()
+    this.getUSerDetail()
   },
   methods: {
+    getUSerDetail(){
+      if (this.$route.query.info) {
+        this.ruleForm=this.$route.query.info
+        this.ruleForm.tequan_user=this.ruleForm.tequan_user=="是"?true:false
+        this.ruleForm.sex=this.ruleForm.sex=="男"?"1":"2";
+      }
+    },
     //上传图片
-    // uploadPic() {},
-    //编辑时获取用户详情
-    user_content(){
-     this.user_content= this.$route.query.info
-     console.log(this.user_contents);
+    handleCancel() {
+      this.previewVisible = false;
     },
-     handleChange(info) {
-      if (info.file.status === 'uploading') {
-        this.loading = true;
-        return;
+    async handlePreview(file) {
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
       }
-      if (info.file.status === 'done') {
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, imageUrl => {
-          this.imageUrl = imageUrl;
-          this.loading = false;
-        });
-      }
+      this.previewImage = file.url || file.preview;
+      this.previewVisible = true;
     },
-    beforeUpload(file) {
-      const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-      if (!isJpgOrPng) {
-        this.$message.error('You can only upload JPG file!');
-      }
-      const isLt2M = file.size / 1024 / 1024 < 2;
-      if (!isLt2M) {
-        this.$message.error('Image must smaller than 2MB!');
-      }
-      return isJpgOrPng && isLt2M;
+    handleChange({ file, fileList }) {
+      // console.log(file.status);
+      this.fileList = [file];
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
@@ -306,6 +308,32 @@ export default {
 <style lang="less">
 .ant-form-item-label {
   margin: 0 20px;
+}
+.ant-upload-picture-card-wrapper {
+  display: flex;
+}
+.ant-upload-list-picture-card .ant-upload-list-item {
+  border: none;
+  padding: 0px;
+}
+.ant-upload-list-picture-card .ant-upload-list-item {
+  width: 120px;
+  height: 120px;
+}
+.ant-upload.ant-upload-select-picture-card {
+  border: none;
+  width: 100%;
+  margin-left: 30px;
+  padding: 0px;
+  .btn {
+    display: block;
+  }
+  .upload_title {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+  }
 }
 </style>
 <style lang="less" socped>

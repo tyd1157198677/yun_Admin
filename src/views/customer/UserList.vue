@@ -77,6 +77,7 @@
     <!-- 充值 -->
     <a-modal
       title="用户充值"
+      
       v-model="visible"
       :centered="true"
       :destroyOnClose="true"
@@ -122,6 +123,7 @@
     </a-modal>
     <!-- 开特权 -->
     <a-modal
+      width="550px"
       title="开通特权"
       v-model="isOpen"
       @ok="selectOk"
@@ -143,9 +145,9 @@
         <a-form-model-item label="所在地区" :colon="false">
           <a-cascader
             :options="regionData"
-            v-model="privilegeForm.region"
             style="width: 60%;margin-left:10px"
             placeholder="请选择地区"
+            @change="getPlace"
           >
           <a-icon type="caret-down" slot="suffixIcon" />
           </a-cascader>
@@ -532,16 +534,19 @@ export default {
       //三级联动数据源
       regionData: [
         {
+          id:"1",
           value: "zhejiang",
-          label: "Zhejiang",
+          label: "浙江",
           children: [
             {
+              id:"1-1",
               value: "hangzhou",
-              label: "Hangzhou",
+              label: "杭州",
               children: [
                 {
+                  id:"1-1-1",
                   value: "xihu",
-                  label: "West Lake"
+                  label: "西湖"
                 }
               ]
             }
@@ -578,7 +583,7 @@ export default {
       //特权窗口
       privilegeForm: {
         privilegeType: "yearPri", //特权类型
-        region: "", //地区
+        
         data: "", //有效期
         trialTime: "", //试用时间
         yearPri: "", //开通价格
@@ -655,6 +660,11 @@ export default {
     selectOk() {
       this.isOpen = false;
       console.log(this.privilegeForm);
+    },
+    //获取地区
+    getPlace(value,info){
+      console.log(value);//["zhejiang","hangzhou","xihu"]
+      console.log(info);//选中的所有信息
     },
     //用户列表删除该用户
     remove(index) {

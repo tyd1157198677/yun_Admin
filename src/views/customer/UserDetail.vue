@@ -8,12 +8,11 @@
           <div class="user_msg">
             <a-avatar
               style="backgroundColor:#F5F7FA;width:60px;height:60px"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              :src="user_detail.url"
             />
-            <!-- <img class="user_img" src="@/assets/img/head_upload@2x.png" alt /> -->
             <div class="user_name">
-              <span class="user_name_title">骑着蜗牛上高速</span>
-              <span class="user_number">13066314447</span>
+              <span class="user_name_title">{{user_detail.userNike}}</span>
+              <span class="user_number">{{user_detail.account}}</span>
             </div>
           </div>
         </div>
@@ -44,67 +43,67 @@
         <div class="detail_left">
           <div>
             真实姓名
-            <span class="user_details">我是谁</span>
+            <span class="user_details">{{user_detail.name}}</span>
           </div>
           <div>
             性别
-            <span class="user_details">男</span>
+            <span class="user_details">{{user_detail.sex}}</span>
           </div>
           <div>
             手机号码
-            <span class="user_details">13066314468</span>
+            <span class="user_details">{{user_detail.phone}}</span>
           </div>
           <div>
             特权用户
-            <span class="user_details">我</span>
+            <span class="user_details">{{user_detail.tequan_user}}</span>
           </div>
           <div>
             赠送余额
-            <span class="user_details">1000.00</span>
+            <span class="user_details">{{user_detail.give_money}}</span>
           </div>
         </div>
         <div class="detail_middle">
           <div>
             行业
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.industry}}</span>
           </div>
           <div>
             职位
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.job}}</span>
           </div>
           <div>
             公司
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.company}}</span>
           </div>
           <div>
             到期时间
-            <span class="user_details">2021-02-16</span>
+            <span class="user_details">{{user_detail.end_time}}</span>
           </div>
           <div>
             余额到期
-            <span class="user_details">2021-02-16</span>
+            <span class="user_details">{{user_detail.balance_time}}</span>
           </div>
         </div>
         <div class="detail_right">
           <div>
             所在地区
-            <span class="user_details">广东省-广州市-花都区</span>
+            <span class="user_details">{{user_detail.palce}}</span>
           </div>
           <div>
             邮 箱
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.email}}</span>
           </div>
           <div>
             微 信
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.weixin}}</span>
           </div>
           <div>
             账户余额
-            <span class="user_details">0.00</span>
+            <span class="user_details">{{user_detail.balance}}</span>
           </div>
           <div>
             备 注
-            <span class="user_details">无</span>
+            <span class="user_details">{{user_detail.beizhu}}</span>
           </div>
         </div>
       </div>
@@ -454,23 +453,24 @@ export default {
         
       ],
       user_detail:{
-        userNike:"",//昵称
-        account:"",//账号
-        name:"",//姓名
-        sex:"",//性别
-        phone:"",//手机号
-        tequan_user:"",//特权用户
-        give_money:"",//赠送余额
-        industry:"",//行业
-        job:"",//职位
-        company:"",//公司
-        end_time:"",//到期时间
-        balance_time:"",//余额到期
-        palce:"",//地区
-        email:"",//邮箱
-        weixin:"",//微信
-        balance:"",//余额
-        beizhu:""//备注
+        url:require("@/assets/img/head_upload@2x.png"),
+        userNike:"骑着蜗牛上高速",//昵称
+        account:"13066314447",//账号
+        name:"我是谁",//姓名
+        sex:"男",//性别
+        phone:"13066314468",//手机号
+        tequan_user:"是",//特权用户
+        give_money:"1000.00",//赠送余额
+        industry:"无",//行业
+        job:"无",//职位
+        company:"无",//公司
+        end_time:"2021-02-16",//到期时间
+        balance_time:"2022-02-16",//余额到期
+        palce:"广东省-广州市-花都区",//地区
+        email:"无",//邮箱
+        weixin:"无",//微信
+        balance:"0.00",//余额
+        beizhu:"无"//备注
       },//用户详情
       key:this.$route.query.key,//key为1时时用户，为2时是黑名单
       bleck:"加入黑名单",//key为1时加入黑名单，为2时是移除黑名单
@@ -490,7 +490,6 @@ export default {
     this.get_detail()
     this.changeColor()
     console.log(this.key);
-    
   },
   methods: {
     //编辑用户
@@ -502,7 +501,7 @@ export default {
     editeUser() {
       this.$router.push({
         path: "AddUser",
-        query:{info:this.user_detail}
+        query:{info:{...this.user_detail}}
       });
     },
     //加入黑名单
@@ -524,11 +523,8 @@ export default {
         icon: "close-circle",
         title: "确定要删除该客户吗?",
         content: "删除后，该用户在平台的所有数据都将清空，且无法恢复",
-        onOk() {
+        onOk:()=> {
           console.log("OK");
-        },
-        onCancel() {
-          console.log("Cancel");
         }
       });
     },
@@ -549,8 +545,9 @@ export default {
       console.log(index);
       
     },
+    //获取用户资料
     get_detail(){
-      this.user_detail=this.$route.query.info;
+      // this.user_detail=this.$route.query.info;
       console.log(this.user_detail);
       
     },
@@ -571,38 +568,7 @@ export default {
 
 
 <style>
-/* .ant-modal-content{
-  width: 433px;
-}
-  .ant-modal-footer .ant-btn{
-      display: none;
-  }
-  .ant-modal-body .ant-form-horizontal .ant-form-item{
-    width: 500px;
-  }
-  .ant-modal-body .ant-form-horizontal .ant-col-6 {
-    width: 80px;
-  }
-  .ant-modal-body .ant-form-horizontal .ant-form-item .ant-form-item-label{
-    width: 120px;
-    display: inline-block;
-  } */
-   /* #rcDialogTitle1{
-    font-size:14px;
-    font-weight:800;
-    color:black;
-      }
-  .ant-modal-footer .ant-btn-primary  {
-      display: inline-block;
-      width:69px;
-      height:40px;
-      border-radius:4px;
 
-  }
-  .ant-modal-close{
-    color: #131414;
-    font-weight: 500;
-  } */
 </style>
 <style lang="less" scoped>
 /deep/.ant-table-column-title {

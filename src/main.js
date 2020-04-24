@@ -3,9 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import has from './directive/btnPermissions.js';//自定义指令
 import 'normalize.css/normalize.css'
 //ant组件按需引入
-import { Button,Layout,Dropdown,Menu,Select,Input,Col,Row,Table,Icon,Tabs,Tag,Divider,Form,FormModel,Pagination,Breadcrumb,Tree,Empty,Modal,Radio,DatePicker,Switch,Cascader,Avatar} from 'ant-design-vue';
+import {Checkbox,Button,Layout,Dropdown,Menu,Select,Input,Col,Row,Table,Icon,Tabs,Tag,Divider,Form,FormModel,Pagination,Breadcrumb,Tree,Empty,Modal,Radio,DatePicker,Switch,Cascader,Avatar} from 'ant-design-vue';
 axios.defaults.baseURL = "https://www.kchuangqi.com/Api/"
 // Vue.prototype.GLOBALURL1 = "https://www.kchuangqi.com/Api/";
 Vue.prototype.$http = axios
@@ -33,8 +34,21 @@ Vue.use(Switch)
 Vue.use(Cascader)
 Vue.use(Avatar)
 Vue.use(Tabs)
+Vue.use(Checkbox)
 Vue.use(Dropdown)
 Vue.config.productionTip = false
+
+router.beforeEach((to, from, next) => {
+  if(to.path == '/login' ){
+  next();
+  }else if(sessionStorage.userId){
+    next()
+  }else{
+    next()
+      // next({ path: '/login',query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+    //  })
+  }
+})
 
 new Vue({
   router,
