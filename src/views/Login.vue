@@ -86,7 +86,7 @@ export default {
         if (valid) {
           sessionStorage.setItem("userId","12")
           sessionStorage.setItem("btnPermissions","0")
-          this.$root.changeUserInfo('2')
+          // this.$root.changeUserInfo('2')
           this.$router.push({path:"/home"})
         } else {
           console.log("error submit!!");
