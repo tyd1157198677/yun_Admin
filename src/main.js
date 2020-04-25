@@ -44,14 +44,15 @@ router.beforeEach((to, from, next) => {
   }else if(sessionStorage.userId){
     next()
   }else{
-    next()
-      // next({ path: '/login',query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
-    //  })
+    // next()
+      next({ path: '/login',query: { redirect: to.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
+     })
   }
 })
 
 new Vue({
   router,
   store,
+  has,
   render: h => h(App)
 }).$mount('#app')

@@ -324,6 +324,37 @@ export default {
   }
 };
 </script>
+<style lang="less">
+.ant-form-item-label {
+  margin: 0 20px;
+}
+.ant-upload-picture-card-wrapper {
+  display: flex;
+}
+.ant-upload-list-picture-card .ant-upload-list-item {
+  border: none;
+  padding: 0px;
+}
+.ant-upload-list-picture-card .ant-upload-list-item {
+  width: 120px;
+  height: 120px;
+}
+.ant-upload.ant-upload-select-picture-card {
+  border: none;
+  width: 100%;
+  margin-left: 30px;
+  padding: 0px;
+  .btn {
+    display: block;
+  }
+  .upload_title {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    text-align: left;
+  }
+}
+</style>
 <style lang="less" socped>
 .AddEmployees {
   width: 100%;
@@ -341,7 +372,6 @@ export default {
       border-left: 3px solid #2b75edff;
       line-height: 16px;
     }
-    
     .beizhu {
       margin-bottom: 84px;
     }

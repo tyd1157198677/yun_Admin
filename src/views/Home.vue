@@ -5,32 +5,18 @@
       <div class="logo">创骐云课堂</div>
       <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']" @click="selectBtn">
         <!-- 权限管理 -->
-        <a-sub-menu key="sub1">
+        <a-sub-menu :key="item.key1" v-for="(item, index) in layoutList" >
           <span slot="title">
             <a-icon type="mail" />
-            <span>权限管理</span>
+            <span>{{item.title1}}</span>
           </span>
-          <a-menu-item key="1-1">角色管理</a-menu-item>
-          <a-menu-item key="1-2">员工管理</a-menu-item>
+          <a-menu-item :key="v.key2" v-for="(v, index) in item.erji">{{v.title2}}</a-menu-item>
           <!-- 备用三级菜单 -->
           <!-- <a-sub-menu key="sub3" title="备用三级菜单">
             <a-menu-item key="1-1-1">选项1</a-menu-item>
             <a-menu-item key="1-1-2">选项2</a-menu-item>
           </a-sub-menu>-->
-        </a-sub-menu>
-
-        <!-- 客户管理 -->
-        <a-sub-menu key="sub2">
-          <span slot="title">
-            <a-icon type="mail" />
-            <span>客户管理</span>
-          </span>
-          <a-menu-item key="2-1">用户管理</a-menu-item>
-          <a-menu-item key="2-2">代理商管理</a-menu-item>
-          <a-menu-item key="2-3">讲师管理</a-menu-item>
-          <a-menu-item key="2-4">总裁管理</a-menu-item>
-          <a-menu-item key="2-5">推广员管理</a-menu-item>
-        </a-sub-menu>
+        </a-sub-menu> 
       </a-menu>
     </a-layout-sider>
 
@@ -90,11 +76,51 @@
 export default {
   components: {},
   data() {
-    
     return {
-      
       routers: "", //面包屑路径
       collapsed: false,
+      layoutList:[
+        {
+          key1:"1",
+          title1:"权限管理",
+          erji:[
+            {
+            key2:"1-1",
+            title2:"角色管理",
+            },
+            {
+            key2:"1-2",
+            title2:"角色管理",
+            }
+          ]
+        },
+        {
+          key1:"2",
+          title1:"客户管理",
+          erji:[
+            {
+            key2:"2-1",
+            title2:"用户管理",
+            },
+            {
+            key2:"2-2",
+            title2:"代理商管理",
+            },
+            {
+            key2:"2-3",
+            title2:"讲师管理",
+            },
+            {
+            key2:"2-4",
+            title2:"总裁管理",
+            },
+            {
+            key2:"2-5",
+            title2:"推广员管理",
+            }
+          ]
+        }
+      ]
       
     };
   },

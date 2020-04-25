@@ -1,25 +1,24 @@
 import Vue from 'vue'
 /**权限指令**/
 const has = Vue.directive('has', {
-   inserted: function (el, binding, vnode) {
+ bind: function (el, binding, vnode) {
   // 获取按钮权限
-  let btnPermissions = vnode.context.$route.meta.btnPermissions;
-  let userId = vnode.context.$root.userInfo.userUserTypeId;
-//   console.log(userId)
-  if (!Vue.prototype.$_has(btnPermissions,userId)&&el.parentElement) {
-   el.parentElement.removeChild(el);
+  let btnPermissions = vnode.context.$route.meta.btnPermissions.split(",");
+  if (!Vue.prototype.$_has(btnPermissions)) {
+   el.parentNode.removeChild(el);
   }
  }
 });
 // 权限检查方法
-Vue.prototype.$_has = function (idArr,id) {
+Vue.prototype.$_has = function (value) {
  let isExist = false;
- if (id == undefined || id == null) {
+ let btnPermissionsStr = sessionStorage.getItem("btnPermissions");
+ if (btnPermissionsStr == undefined || btnPermissionsStr == null) {
   return false;
  }
- if (idArr.indexOf(id) > -1) {
+ if (value.indexOf(btnPermissionsStr) > -1) {
   isExist = true;
  }
  return isExist;
 };
-export {has}
+export  {has}

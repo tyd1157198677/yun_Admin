@@ -34,7 +34,7 @@
         <!-- slot-scope="text, record, index"是给事件传入三个参数，record为下面点击的const data中的对应对象，index为点击的index-->
         <template slot="operation" slot-scope="text, record, index">
           <span>
-            <a-button @click.native="handleTableRow(record)" size="small" type="link">启用</a-button>
+            <a-button @click.native="handleTableRow(record)" size="small" type="link" v-has>启用</a-button>
             <a-button @click.native="editTableRow(record)" size="small" type="link">编辑</a-button>
             <a-button
               @click.native="removeTableRow(index)"

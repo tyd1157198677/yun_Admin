@@ -1,93 +1,113 @@
 <template>
-  <a-form
-    id="components-form-demo-normal-login"
-    :form="form"
-    class="login-form"
-    @submit="handleSubmit"
-  >
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'userName',
-          { rules: [{ required: true, message: 'Please input your username!' }] },
-        ]"
-        placeholder="Username"
-      >
-        <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
-      </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-input
-        v-decorator="[
-          'password',
-          { rules: [{ required: true, message: 'Please input your Password!' }] },
-        ]"
-        type="password"
-        placeholder="Password"
-      >
-        <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
-      </a-input>
-    </a-form-item>
-    <a-form-item>
-      <a-checkbox
-        v-decorator="[
-          'remember',
-          {
-            valuePropName: 'checked',
-            initialValue: true,
-          },
-        ]"
-      >
-        Remember me
-      </a-checkbox>
-      <a class="login-form-forgot" href="">
-        Forgot password
-      </a>
-      <a-button type="primary" @click="login" class="login-form-button">
+  <div class="login">
+    <a-form-model
+      ref="ruleForm"
+      :model="form"
+      :rules="rules"
+      :label-col="labelCol"
+      :wrapper-col="wrapperCol"
+      class="form"
+    >
+      <a-form-model-item label="用户名" prop="userName" ref="userName">
+        <a-input
+          v-model="form.userName"
+          @blur="
+          () => {
+            $refs.userName.onFieldBlur();
+          }
+        "
+        />
+      </a-form-model-item>
+      <a-form-model-item label="密码" prop="password" ref="password">
+        <a-input
+          v-model="form.password"
+          @blur="
+          () => {
+            $refs.password.onFieldBlur();
+          }
+        "
+        />
+      </a-form-model-item>
+      <a-form-model-item :wrapper-col="{ span: 14, offset: 4 }">
+        <a-button type="primary" @click="onSubmit" class="btn">
         登录
       </a-button>
-      Or
-      <a href="">
-        register now!
-      </a>
-    </a-form-item>
-  </a-form>
+      </a-form-model-item>
+    </a-form-model>
+  </div>
 </template>
-
-<script>
+  <script>
 export default {
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'normal_login' });
+  data() {
+    return {
+      labelCol: { span: 4 },
+      wrapperCol: { span: 6 },
+      other: "",
+      form: {
+        userName: "",
+        password:""
+      },
+      rules: {
+        userName: [
+          {
+            required: true,
+            message: "请输入用户名",
+            trigger: "blur"
+          },
+          {
+            min: 3,
+            max: 5,
+            message: "Length should be 3 to 5",
+            trigger: "blur"
+          }
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码",
+            trigger: "blur"
+          },
+          {
+            min: 6,
+            max: 11,
+            message: "长度在6-11个字符！",
+            trigger: "blur"
+          }
+        ]
+      }
+    };
   },
   methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
+    onSubmit() {
+      console.log(this.form);
+      // console.log(this.$store.mutations);
+      console.log(this.$store.state.userinfo);
+      this.$refs.ruleForm.validate(valid => {
+        if (valid) {
+          sessionStorage.setItem("userId","12")
+          sessionStorage.setItem("btnPermissions","0")
+          this.$root.changeUserInfo('2')
+          this.$router.push({path:"/home"})
+        } else {
+          console.log("error submit!!");
+          return false;
         }
       });
-    },
-    login(){
-        this.$router.push({
-        path: "/home",
-      });
     }
-  },
+  }
 };
 </script>
-<style>
-#components-form-demo-normal-login .login-form {
-  max-width: 300px;
-}
-#components-form-demo-normal-login{
-    background: rgb(127, 127, 202);
-    padding:400px;
-}
-#components-form-demo-normal-login .login-form-forgot {
-  float: right;
-}
-#components-form-demo-normal-login .login-form-button {
-  width: 100%;
-}
+<style lang="less" scoped>
+  .login{
+    background: rgb(146, 146, 209);
+    width: 100%;
+    height: 100%;
+    .form{
+      padding-top:20%;
+      padding-left: 30%;
+      .btn{
+        width: 30%;
+      }
+    }
+  }
 </style>

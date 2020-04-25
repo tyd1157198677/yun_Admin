@@ -13,7 +13,7 @@
         <!-- 账号 -->
         <a-form-model-item label="账号" prop="account" :colon="false" ref="name">
           <!-- <label for="psw">账号</label> -->
-          <a-input v-model.trim="ruleForm.account" type="text"/>
+          <a-input v-model.trim="ruleForm.account" type="text" />
         </a-form-model-item>
         <!-- 姓名 -->
         <a-form-model-item label="姓名" prop="name" ref="name" :colon="false">
@@ -247,15 +247,16 @@ export default {
       ]
     };
   },
-  created(){
-    this.getUSerDetail()
+  created() {
+    this.getUSerDetail();
   },
   methods: {
-    getUSerDetail(){
+    getUSerDetail() {
       if (this.$route.query.info) {
-        this.ruleForm=this.$route.query.info
-        this.ruleForm.tequan_user=this.ruleForm.tequan_user=="是"?true:false
-        this.ruleForm.sex=this.ruleForm.sex=="男"?"1":"2";
+        this.ruleForm = this.$route.query.info;
+        this.ruleForm.tequan_user =
+          this.ruleForm.tequan_user == "是" ? true : false;
+        this.ruleForm.sex = this.ruleForm.sex == "男" ? "1" : "2";
       }
     },
     //上传图片
@@ -355,13 +356,13 @@ export default {
     }
     .upload {
       display: flex;
-      .img{
-        img{
-        width: 120px;
-        height: 120px;
+      .img {
+        img {
+          width: 120px;
+          height: 120px;
         }
       }
-      
+
       .upload_right {
         width: 60%;
         margin-right: 30px;

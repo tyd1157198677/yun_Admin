@@ -8,7 +8,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: '/login' //这里用重定向设置默认选中的路由,即点击'/'路径时把'/about' 替换为'/'
+    redirect: '/home' 
   },
   {
     path: '/login',
@@ -42,7 +42,8 @@ const routes = [
             name: 'ManagementRole',
             component: () => import('@/views/permission/ManagementRole.vue'),
             meta: {
-              title: '角色管理'
+              title: '角色管理',
+              btnPermissions:["1","2"],
             },
           },
           {
@@ -50,7 +51,8 @@ const routes = [
             name: 'ManagementStaff',
             component: () => import('@/views/permission/ManagementStaff.vue'),
             meta: {
-              title: '员工管理'
+              title: '员工管理',
+              btnPermissions:[1],
             },
           },
           {
@@ -58,7 +60,8 @@ const routes = [
             name: 'AddRole',
             component: () => import('@/views/permission/AddRole.vue'),
             meta: {
-              title: '添加角色'
+              title: '添加角色',
+              btnPermissions:[1],
             },
           },
           {
@@ -66,13 +69,14 @@ const routes = [
             name: 'AddStaff',
             component: () => import('@/views/permission/AddStaff.vue'),
             meta: {
-              title: '添加员工'
+              title: '添加员工',
+              btnPermissions:["1","2"],
             },
           },
         ],
       },
       //权限管理off
-
+//这是什么呢，其实我也不知道
       //客户管理on
       {
         path: 'customer', //用户管理
@@ -88,7 +92,8 @@ const routes = [
             name: 'userList',
             component: () => import('@/views/customer/UserList.vue'),
             meta: {
-              title: '用户列表'
+              title: '用户列表',
+              btnPermissions:['1','2','3'],
             },
           },
           {
@@ -96,7 +101,8 @@ const routes = [
             name: 'userDetail',
             component: () => import('@/views/customer/UserDetail.vue'),
             meta: {
-              title: '用户详情'
+              title: '用户详情',
+              btnPermissions:['1','2'],
             },
     
           },
@@ -105,7 +111,8 @@ const routes = [
             name: 'AddEmployees',
             component: () => import('@/views/customer/AddEmployees.vue'),
             meta: {
-              title: '添加员工'
+              title: '添加员工',
+              btnPermissions:['1','2'],
             },
           },
           {
@@ -113,7 +120,8 @@ const routes = [
             name: 'AddUser',
             component: () => import('@/views/customer/AddUser.vue'),
             meta: {
-              title: '添加用户'
+              title: '添加用户',
+              btnPermissions:['1','2'],
             }
           },
           {
@@ -121,7 +129,8 @@ const routes = [
             name: 'AgentMangement',
             component: () => import('@/views/customer/AgentMangement.vue'),
             meta: {
-              title: '代理商管理'
+              title: '代理商管理',
+              btnPermissions:['1','2','3'],
             }
           },
           {
@@ -129,7 +138,8 @@ const routes = [
             name: 'TeacherMangement',
             component: () => import('@/views/customer/TeacherMangement.vue'),
             meta: {
-              title: '讲师管理'
+              title: '讲师管理',
+              btnPermissions:['1','2'],
             }
           },
           {
@@ -137,7 +147,8 @@ const routes = [
             name: 'PresidentMangement',
             component: () => import('@/views/customer/PresidentMangement.vue'),
             meta: {
-              title: '总裁管理'
+              title: '总裁管理',
+              btnPermissions:['1','2'],
             }
           },
           {
@@ -145,7 +156,8 @@ const routes = [
             name: 'PromoterMangement',
             component: () => import('@/views/customer/PromoterMangement.vue'),
             meta: {
-              title: '推广员管理'
+              title: '推广员管理',
+              btnPermissions:['1'],
             }
           }
         ],

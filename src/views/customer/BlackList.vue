@@ -6,7 +6,7 @@
         <template slot="operation" slot-scope="text, record, index">
           <span>
             <a-button @click.native="showDetail()" size="small" type="link">详情</a-button>
-            <a-button @click.native="recharge()" size="small" type="link">充值</a-button>
+            <a-button @click.native="recharge()" size="small" type="link" v-has>充值</a-button>
             <a-button @click.native="openPrivilege()" size="small" type="link">开特权</a-button>
             <a-button @click.native="remove()" size="small" type="link">删除</a-button>
           </span>

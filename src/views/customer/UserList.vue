@@ -65,8 +65,8 @@
                 <span>
                   <a-button @click.native="showDetail1(record)" size="small" type="link">详情</a-button>
                   <a-button @click.native="recharge1(record)" size="small" type="link">充值</a-button>
-                  <a-button @click.native="openPrivilege1(record)" size="small" type="link">开特权</a-button>
-                  <a-button @click.native="remove1(index)" size="small" type="link">删除</a-button>
+                  <a-button @click.native="openPrivilege1(record)" size="small" type="link" v-has>开特权</a-button>
+                  <a-button @click.native="remove1(index)" size="small" type="link" >删除</a-button>
                 </span>
               </template>
             </a-table>
@@ -220,6 +220,7 @@ export default {
   data() {
     return {
       //用户列表
+      btn:sessionStorage.getItem("btnPermissions"),
       columns: [
         {
           title: "用户名",
@@ -719,7 +720,11 @@ export default {
     }
   },
   created(){
+    console.log(this.btn);
+    
     // this.getUserList()
+    // console.log(vnode.context.$route.meta.btnPermissions);
+    
   },
   watch: {
     pageSize(val) {
