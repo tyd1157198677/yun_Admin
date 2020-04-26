@@ -38,6 +38,9 @@ Vue.use(Checkbox)
 Vue.use(Dropdown)
 Vue.config.productionTip = false
 
+
+import { mapState } from 'vuex'
+
 router.beforeEach((to, from, next) => {
   if(to.path == '/login' ){
   next();
@@ -54,5 +57,8 @@ new Vue({
   router,
   store,
   has,
+  computed: mapState([
+    'userinfo'
+  ]),
   render: h => h(App)
 }).$mount('#app')

@@ -4,19 +4,18 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    userinfo:""
-  },
-  mutations: {
-    changeUserInfo:(s,i)=>{ //同步修改用户信息
-      s.userInfo = i;
+    state: {
+        userinfo: { UserTypeId: "2" }
     },
-  },
-  actions: {
-    changeUserInfo: (c, i) => { //异步修改用户信息
-      c.commit('changeUserInfo', i)
-    }
-  },
-  modules: {
-  }
+    mutations: {
+        changeUserInfo: (s, i) => { //同步修改用户信息
+            s.userInfo = i;
+        },
+    },
+    actions: {
+        changeUserInfo: (c, i) => { //异步修改用户信息
+            c.commit('changeUserInfo', i)
+        }
+    },
+    modules: {}
 })

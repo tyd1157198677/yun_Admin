@@ -5,10 +5,10 @@
         <!-- slot-scope="text, record, index"是给事件传入三个参数，record为下面点击的const data中的对应对象，index为点击的index-->
         <template slot="operation" slot-scope="text, record, index">
           <span>
-            <a-button @click.native="showDetail()" size="small" type="link">详情</a-button>
-            <a-button @click.native="recharge()" size="small" type="link" v-has>充值</a-button>
-            <a-button @click.native="openPrivilege()" size="small" type="link">开特权</a-button>
-            <a-button @click.native="remove()" size="small" type="link">删除</a-button>
+            <a-button @click.native="showDetail(record)" size="small" type="link">详情</a-button>
+            <a-button @click.native="recharge(record)" size="small" type="link" v-has>充值</a-button>
+            <a-button @click.native="openPrivilege(record)" size="small" type="link">开特权</a-button>
+            <a-button @click.native="remove(index)" size="small" type="link">删除</a-button>
           </span>
         </template>
       </a-table>
