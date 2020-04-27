@@ -3,8 +3,7 @@
     <div class="header">
       <!-- 温馨提示 -->
       <div class="tips">
-        <img class="tips_img" src="@/assets/img/icon_general_hint_16@2x (1).png" alt />
-        <span class="tips_font">温馨提示：编辑角色，拥有该角色包含权限的账号会同步更改，请谨慎编辑！</span>
+        <a-alert message="温馨提示：编辑角色，拥有该角色包含权限的账号会同步更改，请谨慎编辑！" banner />
       </div>
       <a-button class="btn" type="primary" size="large" @click="addRole">添加角色</a-button>
     </div>
@@ -20,7 +19,6 @@
       </a-table>
       <!-- 没数据时的页面 -->
       <div v-else>
-        <!-- <errPage/> -->
         <a-empty description="暂无数据" />
       </div>
     </div>
@@ -32,104 +30,99 @@
 </template>
 
 <script>
-import {Modal} from 'ant-design-vue';
 import { confirm } from "@/antUI/module.js";
 import WarmPrompt from "@/components/WarmPrompt.vue";
 import FooterPagination from "@/components/FooterPagination.vue";
-import errPage from "@/components/errPage.vue";
-const columns = [
-  {
-    title: "角色",
-    dataIndex: "role",
-    width: "20%",
-    scopedSlots: { customRender: "role" }
-  },
-  {
-    title: "描述",
-    dataIndex: "detail",
-    width: "60%",
-    scopedSlots: { customRender: "detail" }
-  },
-  {
-    align:"right",
-    title: "操作",
-    dataIndex: "operation",
-    width: "20%",
-    scopedSlots: { customRender: "operation" }
-  }
-];
-
-const data = [
-  {
-    key: "1",
-    role: "管理者",
-    detail:
-      "不要超过这个字数限制不然就会不好看的也不好管理还要换"
-  },
-  {
-    key: "2",
-    role: "管理者",
-    detail:
-      "个字数限制不然就会不好看的也不好管理还要换"
-  },
-  {
-    key: "3",
-    role: "管理者",
-    detail:
-      "测试字数最多可以多少个汉字就是显示在这里最合适的不要超过这个字数限制不然就会不好看的也不好管理还要换"
-  },
-  {
-    key: "4",
-    role: "管理者",
-    detail:
-      "也不好管理还要换"
-  },
-  {
-    key: "5",
-    role: "管理者",
-    detail:
-      "也不好管理还要换"
-  },
-  {
-    key: "6",
-    role: "管理者",
-    detail:
-      "不好看的也不好管理还要换"
-  },
-  {
-    key: "7",
-    role: "管理者",
-    detail:
-      "不好看的也不好管理还要换"
-  },
-  {
-    key: "8",
-    role: "管理者",
-    detail:
-      "就会不好看的也不好管理还要换"
-  },
-  {
-    key: "9",
-    role: "管理者",
-    detail:
-      "不好看的也不好管理还要换"
-  },
-  {
-    key: "10",
-    role: "管理者",
-    detail:
-      "的也不好管理还要换"
-  }
-];
 export default {
   components: {
-    FooterPagination,
-    errPage
+    FooterPagination
   },
   data() {
     return {
-      data,
-      columns,
+      //角色管理数据
+      data:[
+        {
+          key: "1",
+          role: "管理者",
+          detail:
+            "不要超过这个字数限制不然就会不好看的也不好管理还要换"
+        },
+        {
+          key: "2",
+          role: "管理者",
+          detail:
+            "个字数限制不然就会不好看的也不好管理还要换"
+        },
+        {
+          key: "3",
+          role: "管理者",
+          detail:
+            "测试字数最多可以多少个汉字就是显示在这里最合适的不要超过这个字数限制不然就会不好看的也不好管理还要换"
+        },
+        {
+          key: "4",
+          role: "管理者",
+          detail:
+            "也不好管理还要换"
+        },
+        {
+          key: "5",
+          role: "管理者",
+          detail:
+            "也不好管理还要换"
+        },
+        {
+          key: "6",
+          role: "管理者",
+          detail:
+            "不好看的也不好管理还要换"
+        },
+        {
+          key: "7",
+          role: "管理者",
+          detail:
+            "不好看的也不好管理还要换"
+        },
+        {
+          key: "8",
+          role: "管理者",
+          detail:
+            "就会不好看的也不好管理还要换"
+        },
+        {
+          key: "9",
+          role: "管理者",
+          detail:
+            "不好看的也不好管理还要换"
+        },
+        {
+          key: "10",
+          role: "管理者",
+          detail:
+            "的也不好管理还要换"
+        }
+      ],
+      columns:[
+            {
+              title: "角色",
+              dataIndex: "role",
+              width: "20%",
+              scopedSlots: { customRender: "role" }
+            },
+            {
+              title: "描述",
+              dataIndex: "detail",
+              width: "60%",
+              scopedSlots: { customRender: "detail" }
+            },
+            {
+              align:"right",
+              title: "操作",
+              dataIndex: "operation",
+              width: "20%",
+              scopedSlots: { customRender: "operation" }
+            }
+          ],
       editingKey: "",
       pageCount: 60,
       currentPage: 1 //当前选择的页数,默认为第一页
@@ -185,14 +178,6 @@ export default {
       border: 1px solid rgba(255, 229, 143, 1);
       display: flex;
       align-items: center;
-      .tips_img {
-        margin:0 10px;
-        width: 16px;
-        height: 16px;
-      }
-      .tips_font {
-        font-size: 14px;
-      }
     }
     .btn {
       margin: 2.6% 0%;

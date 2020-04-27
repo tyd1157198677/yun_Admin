@@ -2,8 +2,7 @@
   <div class="AddRole">
     <!-- 温馨提示 -->
     <div class="tips">
-        <img class="tips_img" src="@/assets/img/icon_general_hint_16@2x (1).png" alt />
-        <span class="tips_font">温馨提示：编辑角色，拥有该角色包含权限的账号会同步更改，请谨慎编辑！</span>
+      <a-alert message="温馨提示：添加角色，拥有该角色包含权限的账号会同步更改，请谨慎编辑！" banner />
       </div>
     <div class="form">
       <p class="title">基本信息</p>
@@ -33,6 +32,7 @@
         <p class="title">权限设置</p>
         <a-tree
           checkable
+          blockNode
           :treeData="treeData"
           :defaultExpandedKeys="['0-0','0-0-0']"
           :defaultCheckedKeys="ruleForm.ruleSet"
@@ -162,15 +162,7 @@ export default {
       border: 1px solid rgba(255, 229, 143, 1);
       display: flex;
       align-items: center;
-      margin-bottom: 15px;
-      .tips_img {
-        margin:0 10px;
-        width: 16px;
-        height: 16px;
-      }
-      .tips_font {
-        font-size: 14px;
-      }
+      margin-bottom: 20px;
     }
   .title {
     font-size: 14px;

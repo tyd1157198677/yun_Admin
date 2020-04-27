@@ -53,7 +53,7 @@ const routes = [{
                             import ('@/views/permission/ManagementStaff.vue'),
                         meta: {
                             title: '员工管理',
-                            btnPermissions: ["1", "2", "3"],
+                            btnPermissions: ["1", "2"],
                         },
                     },
                     {
@@ -87,7 +87,7 @@ const routes = [{
                 component: () =>
                     import ('@/views/customer/ManagementCustomer.vue'),
                 meta: {
-                    title: '用户管理'
+                    title: '客户管理'
                 },
                 redirect: 'customer/userList',
                 children: [{
@@ -96,8 +96,8 @@ const routes = [{
                         component: () =>
                             import ('@/views/customer/UserList.vue'),
                         meta: {
-                            title: '用户列表',
-                            btnPermissions: ['1', '2', '3'],
+                            title: '用户管理',
+                            btnPermissions: ['1'],
                         },
                     },
                     {
@@ -168,7 +168,7 @@ const routes = [{
                             import ('@/views/customer/PromoterMangement.vue'),
                         meta: {
                             title: '推广员管理',
-                            btnPermissions: ['1'],
+                            btnPermissions: ['3'],
                         }
                     }
                 ],

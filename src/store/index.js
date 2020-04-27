@@ -5,16 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        userinfo: { UserTypeId: "2" }
+        userinfo: { UserTypeId: sessionStorage.getItem("userinfo") || {}||[] }
+    },
+    getters:{
+        getuserinfo: (state) => state.userinfo.UserTypeId,
     },
     mutations: {
         changeUserInfo: (s, i) => { //同步修改用户信息
-            s.userInfo = i;
+            sessionStorage.setItem('userinfo', i);//将传递的数据先保存到sessionStorage中
+            s.userinfo.UserTypeId = i;// 之后才是修改state中的状态
         },
     },
     actions: {
-        changeUserInfo: (c, i) => { //异步修改用户信息
-            c.commit('changeUserInfo', i)
+        changeUserInfo: ({commit}, i) => { //异步修改用户信息
+            commit('changeUserInfo', i)
         }
     },
     modules: {}

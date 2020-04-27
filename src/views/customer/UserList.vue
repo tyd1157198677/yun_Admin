@@ -45,7 +45,7 @@
                 <span>
                   <a-button @click.native="showDetail(record)" size="small" type="link">详情</a-button>
                   <a-button @click.native="recharge(record)" size="small" type="link">充值</a-button>
-                  <a-button @click.native="openPrivilege(record)" size="small" type="link">开特权</a-button>
+                  <a-button @click.native="openPrivilege(record)" size="small" type="link" v-has>开特权</a-button>
                   <a-button @click.native="remove(index)" size="small" type="link">删除</a-button>
                 </span>
               </template>
@@ -220,7 +220,6 @@ export default {
   data() {
     return {
       //用户列表
-      btn:sessionStorage.getItem("btnPermissions"),
       columns: [
         {
           title: "用户名",
@@ -609,7 +608,6 @@ export default {
     //     params: this.queryInfo
     //   });
     //   console.log(res);
-    //   this.info(res, "获取列表失败", "获取列表成功");
     //   this.data = res.data.goods;
     //   this.total = res.data.total;
     // },
@@ -676,6 +674,7 @@ export default {
         onOk: ()=>  {
           // console.log("OK");
           this.data.splice(index,1)
+          this.$message.success('删除成功！')
         }
       });
     },
@@ -699,8 +698,8 @@ export default {
         icon: "close-circle",
         title: "确定要删除该客户吗?",
         content: "删除后，该用户在平台的所有数据都将清空，且无法恢复",
-        onOk() {
-          console.log("OK");
+        onOk:()=> {
+          this.$message.success('删除成功！')
         },
         onCancel() {
           console.log("Cancel");
@@ -720,11 +719,8 @@ export default {
     }
   },
   created(){
-    console.log(this.btn);
-    
+    // 
     // this.getUserList()
-    // console.log(vnode.context.$route.meta.btnPermissions);
-    
   },
   watch: {
     pageSize(val) {

@@ -113,35 +113,19 @@
       <a-tabs defaultActiveKey="1" size="large" @change="callback">
         <a-tab-pane tab="跟进记录" key="1">
           <div class="gj_record">
-            <div class="user">
-              <div class="user_msg">
+            <div class="user" v-for="(item, index) in gj_record" :key="index">
+              <div class="user_msg" >
                 <a-avatar
                   style="backgroundColor:#F5F7FA;width:40px;height:40px"
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+                  :src="item.url"
                 />
                 <!-- <img class="user_img" src="@/assets/img/head_upload@2x.png" alt /> -->
                 <div class="user_name">
-                  <span class="user_name_title">骑着蜗牛上高速</span>
-                  <span class="user_time">2009-11-14 12:22</span>
+                  <span class="user_name_title">{{item.user_name}}</span>
+                  <span class="user_time">{{item.user_time}}</span>
                 </div>
               </div>
-              <div class="f_content">这是一条跟进记录，今天联系了这个用户</div>
-            </div>
-            <div class="user">
-              <div class="user_msg">
-                <a-avatar
-                  style="backgroundColor:#F5F7FA;width:40px;height:40px"
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                />
-                <!-- <img class="user_img" src="@/assets/img/head_upload@2x.png" alt /> -->
-                <div class="user_name">
-                  <span class="user_name_title">骑着蜗牛上高速</span>
-                  <span class="user_time">2009-11-14 12:22</span>
-                </div>
-              </div>
-              <div
-                class="f_content"
-              >但无论是哪种类型用户，都一定会有同种共性——好奇心。好奇心足以牵引着一个人对所产生事物的关注程度和好感度，从而使得他由被动接受信息直接转型为主动了解信息</div>
+              <div class="f_content">{{item.gj_content}}</div>
             </div>
           </div>
         </a-tab-pane>
@@ -208,6 +192,7 @@ import { confirm } from "@/antUI/module.js";
 export default {
   data() {
     return {
+      //学习记录
       columns: [
         {
           title: "课程名称",
@@ -270,6 +255,7 @@ export default {
           url: require("../../assets/img/QQ截图20200418175400.png")
         }
       ],
+      //购买记录
       columns1: [
         {
           title: "课程名称",
@@ -331,6 +317,7 @@ export default {
           order_num: "1582184948713"
         }
       ],
+      //红包明细
       columns2: [
         {
           title: "提现金额",
@@ -383,6 +370,7 @@ export default {
           operationer: "财务乙"
         }
       ],
+      //余额明细
       columns3: [
         {
           title: "流水号",
@@ -483,7 +471,25 @@ export default {
       redPacketForm: {
         minMoney: "",
         count: ""
+      },
+      //跟进记录
+      gj_record:[
+        {
+          id:1,
+          url:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+          user_name:"骑着蜗牛上高速",
+          user_time:"2009-11-14 12:22",
+          gj_content:"这是一条跟进记录，今天联系了这个用户"
+      },
+      {
+        id:2,
+        url:"https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
+        user_name:"骑着蜗牛上高速",
+        user_time:"2009-11-14 12:22",
+        gj_content:"但无论是哪种类型用户，都一定会有同种共性——好奇心。好奇心足以牵引着一个人对所产生事物的关注程度和好感度，从而使得他由被动接受信息直接转型为主动了解信息"
       }
+      ],
+      
     };
   },
   created(){

@@ -1,22 +1,21 @@
 <template>
-  <a-layout class="home">
+  <a-layout class="home" hasSider="true">
     <!-- <a-layout-sider class="aside" :width="navWidth" :trigger="null" collapsible v-model="collapsed"> -->
     <a-layout-sider class="aside" width="208px" :trigger="null" collapsible v-model="collapsed">
       <div class="logo">创骐云课堂</div>
       <a-menu theme="dark" mode="inline" :defaultSelectedKeys="['1']" @click="selectBtn">
         <!-- 权限管理 -->
-        <a-sub-menu :key="item.key1" v-for="(item, index) in layoutList" >
+        <a-sub-menu :key="item.id" v-for="(item, index) in layoutList">
           <span slot="title">
             <a-icon type="mail" />
-            <span>{{item.title1}}</span>
+            <span>{{item.title}}</span>
           </span>
-          <a-menu-item :key="v.key2" v-for="(v, index) in item.erji">{{v.title2}}</a-menu-item>
+          <a-menu-item :key="v.id" v-for="(v, index) in item.erji">{{v.title}}</a-menu-item>
           <!-- 备用三级菜单 -->
-          <!-- <a-sub-menu key="sub3" title="备用三级菜单">
-            <a-menu-item key="1-1-1">选项1</a-menu-item>
-            <a-menu-item key="1-1-2">选项2</a-menu-item>
-          </a-sub-menu>-->
-        </a-sub-menu> 
+          <a-sub-menu :key="i.id" :title="i.title" v-for="i in item.sanji">
+            <a-menu-item :key="v.id" v-for="v in i.item">{{v.title}}</a-menu-item>
+          </a-sub-menu>
+        </a-sub-menu>
       </a-menu>
     </a-layout-sider>
 
@@ -26,11 +25,7 @@
         <!-- 面包屑 -->
         <div class="header_content">
           <a-breadcrumb class="breadcrumb">
-            <a-breadcrumb-item
-              v-for="(item, index) in breadList"
-              :key="item.name"
-              style="color:rgba(48,49,51,1);"
-            >
+            <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.name">
               <router-link
                 v-if="item.name != name && index != 1"
                 :to="{ path: item.path === '' ? '/' : item.path }"
@@ -46,17 +41,18 @@
             style="backgroundColor:#F5F7FA;margin: 0 5px"
             src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
           />
-          <a-dropdown  :trigger="['click']">
+          <a-dropdown :trigger="['click']">
+            <!-- event.preventDefault()取消时间的默认动作 -->
             <a-icon type="caret-down" @click="e => e.preventDefault()" />
-            <a-menu slot="overlay">
+            <a-menu slot="overlay" style="margin-top:15px;width:150px;margin-right:-50px">
               <a-menu-item>
-                <a href="javascript:;">1st menu item</a>
+                <a href="javascript:;">个人中心</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">2nd menu item</a>
+                <a href="javascript:;">设置</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">3rd menu item</a>
+                <a href="javascript:;" @click="exit">退出</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -73,60 +69,81 @@
   </a-layout>
 </template>
 <script>
+import { confirm } from "@/antUI/module.js";
 export default {
   components: {},
   data() {
     return {
       routers: "", //面包屑路径
       collapsed: false,
-      layoutList:[
+      layoutList: [
         {
-          key1:"1",
-          title1:"权限管理",
-          erji:[
+          id: "1",
+          title: "权限管理",
+          erji: [
             {
-            key2:"1-1",
-            title2:"角色管理",
+              id: "1-1",
+              title: "角色管理"
             },
             {
-            key2:"1-2",
-            title2:"员工管理",
+              id: "1-2",
+              title: "员工管理"
+            }
+          ],
+          sanji: [
+            {
+              id: "1-1-1",
+              title: "三级备用",
+              item: [
+                {
+                  id: "1-1-1-1",
+                  title: "菜单1"
+                },
+                {
+                  id: "1-1-1-2",
+                  title: "菜单2"
+                }
+              ]
             }
           ]
         },
         {
-          key1:"2",
-          title1:"客户管理",
-          erji:[
+          id: "2",
+          title: "客户管理",
+          erji: [
             {
-            key2:"2-1",
-            title2:"用户管理",
+              id: "2-1",
+              title: "用户管理"
             },
             {
-            key2:"2-2",
-            title2:"代理商管理",
+              id: "2-2",
+              title: "代理商管理"
             },
             {
-            key2:"2-3",
-            title2:"讲师管理",
+              id: "2-3",
+              title: "讲师管理"
             },
             {
-            key2:"2-4",
-            title2:"总裁管理",
+              id: "2-4",
+              title: "总裁管理"
             },
             {
-            key2:"2-5",
-            title2:"推广员管理",
+              id: "2-5",
+              title: "推广员管理"
             }
           ]
         }
       ]
-      
     };
   },
   created() {
     this.getBreadcrumb();
+    this.init();
+    let res = sessionStorage.getItem("userinfo");
+    this.$store.dispatch("changeUserInfo", res);
+    console.log(this.$store.state.userinfo.UserTypeId);
   },
+
   methods: {
     //路由选择
     selectRouter(currentKey) {
@@ -134,10 +151,10 @@ export default {
         "1-1": { name: "ManagementRole" }, //角色管理
         "1-2": { name: "ManagementStaff" }, //员工管理
         "2-1": { name: "userList" }, //用户管理
-        "2-2": { name: "AgentMangement" },//代理商管理
-        "2-3": { name: "TeacherMangement" },//讲师管理
-        "2-4": { name: "PresidentMangement" },//总裁管理
-        "2-5": { name: "PromoterMangement" },//推广员管理
+        "2-2": { name: "AgentMangement" }, //代理商管理
+        "2-3": { name: "TeacherMangement" }, //讲师管理
+        "2-4": { name: "PresidentMangement" }, //总裁管理
+        "2-5": { name: "PromoterMangement" } //推广员管理
       };
       routerObj[currentKey] ? this.jumpRouter(routerObj[currentKey]) : false;
     },
@@ -158,6 +175,39 @@ export default {
       this.$route.matched.forEach(item => {
         this.breadList.push(item); //将层级路由的路径放入数组breadList中
       });
+    },
+    /**
+     *  初始化
+     */
+    init() {
+      var _this = this;
+      // if (sessionStorage.store) {
+      //   var nowLoginUser = JSON.parse(sessionStorage.NowLoginUser);
+      //   var newUserId = nowLoginUser.userUid;
+      //   var oldLogin = JSON.parse(sessionStorage.store);
+      //   // var oldUserId = oldLogin.userModule.userInfo.userUid;
+      //   if (newUserId == oldUserId) {
+      //     _this.$store.replaceState(
+      //       Object.assign({}, _this.$store.state, oldLogin)
+      //     );
+      //     sessionStorage.removeItem("store");
+      //   } else {
+      //     sessionStorage.removeItem("store");
+      //   }
+      // }
+    },
+    //退出
+    exit() {
+      confirm({
+        title: "确定要退出吗？",
+        okText: "确定",
+        okType: "woring",
+        cancelText: "取消",
+        onOk: () => {
+          this.$router.push({ name: "login" });
+          sessionStorage.clear();
+        }
+      });
     }
   },
   watch: {
@@ -168,8 +218,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-/deep/.ant-layout-content{
-  flex:none
+/deep/.ant-layout-content {
+  flex: none;
 }
 .home {
   width: 100%;
@@ -215,7 +265,7 @@ export default {
   #main {
     // margin: 1.8% 1.8% 0% 1.8%;
     margin: 18px 24px;
-    // min-width: 1380px;
+    min-width: 1200px;
     background-color: #f5f7faff;
   }
 }

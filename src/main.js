@@ -5,8 +5,9 @@ import store from './store'
 import axios from 'axios'
 import has from './directive/btnPermissions.js';//自定义指令
 import 'normalize.css/normalize.css'
+
 //ant组件按需引入
-import {Checkbox,Button,Layout,Dropdown,Menu,Select,Input,Col,Row,Table,Icon,Tabs,Tag,Divider,Form,FormModel,Pagination,Breadcrumb,Tree,Empty,Modal,Radio,DatePicker,Switch,Cascader,Avatar} from 'ant-design-vue';
+import {Checkbox,Button,Alert,Layout,message,Dropdown,Menu,Select,Input,Col,Row,Table,Icon,Tabs,Tag,Divider,Form,FormModel,Pagination,Breadcrumb,Tree,Empty,Modal,Radio,DatePicker,Switch,Cascader,Avatar} from 'ant-design-vue';
 axios.defaults.baseURL = "https://www.kchuangqi.com/Api/"
 // Vue.prototype.GLOBALURL1 = "https://www.kchuangqi.com/Api/";
 Vue.prototype.$http = axios
@@ -36,10 +37,12 @@ Vue.use(Avatar)
 Vue.use(Tabs)
 Vue.use(Checkbox)
 Vue.use(Dropdown)
+Vue.use(Alert)
 Vue.config.productionTip = false
 
 
 import { mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
 router.beforeEach((to, from, next) => {
   if(to.path == '/login' ){
@@ -52,7 +55,7 @@ router.beforeEach((to, from, next) => {
      })
   }
 })
-
+Vue.prototype.$message = message;
 new Vue({
   router,
   store,
@@ -60,5 +63,10 @@ new Vue({
   computed: mapState([
     'userinfo'
   ]),
+  methods:{
+    // ...mapActions([
+    //   'changeUserInfo',
+    // ])
+  },
   render: h => h(App)
 }).$mount('#app')
