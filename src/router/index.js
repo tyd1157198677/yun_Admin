@@ -2,9 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
 import Login from '@/views/Login.vue'
-
+// let val= sessionStorage.getItem('addOredite')
 Vue.use(VueRouter)
 
+//组件很多的时候，你会发现你的页面在首次加载的时候，异常的慢
+//所以组件实现按需加入使用require(['@/views/permission/RoleMangement'], res),
 const routes = [{
         path: '/',
         redirect: '/home'
@@ -30,8 +32,9 @@ const routes = [{
             {
                 path: 'permission',
                 name: 'permission',
-                component: () =>
-                    import ('@/views/permission/RoleMangement.vue'),
+                component: (res) =>
+                require(['@/views/permission/RoleMangement'], res),
+                    // import ('@/views/permission/RoleMangement.vue'),
                 meta: {
                     title: '权限管理'
                 },
@@ -39,8 +42,9 @@ const routes = [{
                 children: [{
                         path: 'ManagementRole',
                         name: 'ManagementRole',
-                        component: () =>
-                            import ('@/views/permission/ManagementRole.vue'),
+                        component: (res) =>
+                        require(['@/views/permission/ManagementRole'], res),
+                            // import ('@/views/permission/ManagementRole.vue'),
                         meta: {
                             title: '角色管理',
                             btnPermissions: [1, 2]
@@ -49,8 +53,9 @@ const routes = [{
                     {
                         path: 'ManagementStaff',
                         name: 'ManagementStaff',
-                        component: () =>
-                            import ('@/views/permission/ManagementStaff.vue'),
+                        component: (res) =>
+                        require(['@/views/permission/ManagementStaff'], res),
+                            // import ('@/views/permission/ManagementStaff.vue'),
                         meta: {
                             title: '员工管理',
                             btnPermissions: ["1", "2"],
@@ -59,8 +64,9 @@ const routes = [{
                     {
                         path: 'addRole', //添加角色
                         name: 'AddRole',
-                        component: () =>
-                            import ('@/views/permission/AddRole.vue'),
+                        component: (res) =>
+                        require(['@/views/permission/AddRole'], res),
+                            // import ('@/views/permission/AddRole.vue'),
                         meta: {
                             title: '添加角色',
                             btnPermissions: [1],
@@ -69,8 +75,9 @@ const routes = [{
                     {
                         path: 'AddStaff', //添加角色
                         name: 'AddStaff',
-                        component: () =>
-                            import ('@/views/permission/AddStaff.vue'),
+                        component: (res) =>
+                        require(['@/views/permission/AddStaff'], res),
+                            // import ('@/views/permission/AddStaff.vue'),
                         meta: {
                             title: '添加员工',
                             btnPermissions: ["1", "2"],
@@ -84,8 +91,9 @@ const routes = [{
             {
                 path: 'customer', //用户管理
                 name: 'customer',
-                component: () =>
-                    import ('@/views/customer/ManagementCustomer.vue'),
+                component: (res) =>
+                    require(['@/views/customer/ManagementCustomer'], res),
+                    // import ('@/views/customer/ManagementCustomer.vue'),
                 meta: {
                     title: '客户管理'
                 },
@@ -93,8 +101,9 @@ const routes = [{
                 children: [{
                         path: 'userList', //用户列表
                         name: 'userList',
-                        component: () =>
-                            import ('@/views/customer/UserList.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/UserList'], res),
+                            // import ('@/views/customer/UserList.vue'),
                         meta: {
                             title: '用户管理',
                             btnPermissions: ['1'],
@@ -103,19 +112,20 @@ const routes = [{
                     {
                         path: 'userDetail', //用户详情
                         name: 'userDetail',
-                        component: () =>
-                            import ('@/views/customer/UserDetail.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/UserDetail'], res),
+                            // import ('@/views/customer/UserDetail.vue'),
                         meta: {
                             title: '用户详情',
                             btnPermissions: ['1', '2'],
                         },
-
                     },
                     {
                         path: 'AddEmployees',
                         name: 'AddEmployees',
-                        component: () =>
-                            import ('@/views/customer/AddEmployees.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/AddEmployees'], res),
+                            // import ('@/views/customer/AddEmployees.vue'),
                         meta: {
                             title: '添加员工',
                             btnPermissions: ['1', '2'],
@@ -124,18 +134,20 @@ const routes = [{
                     {
                         path: 'AddUser',
                         name: 'AddUser',
-                        component: () =>
-                            import ('@/views/customer/AddUser.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/AddUser'], res),
+                            // import ('@/views/customer/AddUser.vue'),
                         meta: {
                             title: '添加用户',
                             btnPermissions: ['1', '2'],
-                        }
+                            }
                     },
                     {
                         path: 'AgentMangement',
                         name: 'AgentMangement',
-                        component: () =>
-                            import ('@/views/customer/AgentMangement.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/AgentMangement'], res),
+                            // import ('@/views/customer/AgentMangement.vue'),
                         meta: {
                             title: '代理商管理',
                             btnPermissions: ['1', '2', '3'],
@@ -144,8 +156,9 @@ const routes = [{
                     {
                         path: 'TeacherMangement',
                         name: 'TeacherMangement',
-                        component: () =>
-                            import ('@/views/customer/TeacherMangement.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/TeacherMangement'], res),
+                            // import ('@/views/customer/TeacherMangement.vue'),
                         meta: {
                             title: '讲师管理',
                             btnPermissions: ['1', '2'],
@@ -154,8 +167,9 @@ const routes = [{
                     {
                         path: 'PresidentMangement',
                         name: 'PresidentMangement',
-                        component: () =>
-                            import ('@/views/customer/PresidentMangement.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/PresidentMangement'], res),
+                            // import ('@/views/customer/PresidentMangement.vue'),
                         meta: {
                             title: '总裁管理',
                             btnPermissions: ['1', '2'],
@@ -164,8 +178,9 @@ const routes = [{
                     {
                         path: 'PromoterMangement',
                         name: 'PromoterMangement',
-                        component: () =>
-                            import ('@/views/customer/PromoterMangement.vue'),
+                        component: (res) =>
+                        require(['@/views/customer/PromoterMangement'], res),
+                            // import ('@/views/customer/PromoterMangement.vue'),
                         meta: {
                             title: '推广员管理',
                             btnPermissions: ['3'],

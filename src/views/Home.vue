@@ -10,10 +10,10 @@
             <a-icon type="mail" />
             <span>{{item.title}}</span>
           </span>
-          <a-menu-item :key="v.id" v-for="(v, index) in item.erji">{{v.title}}</a-menu-item>
+          <a-menu-item :key="v.id" v-for="(v, index) in item.children">{{v.title}}</a-menu-item>
           <!-- 备用三级菜单 -->
-          <a-sub-menu :key="i.id" :title="i.title" v-for="i in item.sanji">
-            <a-menu-item :key="v.id" v-for="v in i.item">{{v.title}}</a-menu-item>
+          <a-sub-menu :key="i.id" :title="i.title" v-for="i in item.children3">
+            <a-menu-item :key="v.id" v-for="v in i.children">{{v.title}}</a-menu-item>
           </a-sub-menu>
         </a-sub-menu>
       </a-menu>
@@ -26,11 +26,13 @@
         <div class="header_content">
           <a-breadcrumb class="breadcrumb">
             <a-breadcrumb-item v-for="(item, index) in breadList" :key="item.name">
+              <strong> 
               <router-link
                 v-if="item.name != name && index != 1"
                 :to="{ path: item.path === '' ? '/' : item.path }"
               >{{ item.meta.title }}</router-link>
               <span v-else>{{ item.meta.title }}</span>
+              </strong>
             </a-breadcrumb-item>
           </a-breadcrumb>
         </div>
@@ -80,7 +82,7 @@ export default {
         {
           id: "1",
           title: "权限管理",
-          erji: [
+          children: [
             {
               id: "1-1",
               title: "角色管理"
@@ -90,11 +92,11 @@ export default {
               title: "员工管理"
             }
           ],
-          sanji: [
+          children3: [
             {
               id: "1-1-1",
               title: "三级备用",
-              item: [
+              children: [
                 {
                   id: "1-1-1-1",
                   title: "菜单1"
@@ -110,7 +112,7 @@ export default {
         {
           id: "2",
           title: "客户管理",
-          erji: [
+          children: [
             {
               id: "2-1",
               title: "用户管理"
@@ -138,7 +140,6 @@ export default {
   },
   created() {
     this.getBreadcrumb();
-    this.init();
     let res = sessionStorage.getItem("userinfo");
     this.$store.dispatch("changeUserInfo", res);
     console.log(this.$store.state.userinfo.UserTypeId);
@@ -176,26 +177,7 @@ export default {
         this.breadList.push(item); //将层级路由的路径放入数组breadList中
       });
     },
-    /**
-     *  初始化
-     */
-    init() {
-      var _this = this;
-      // if (sessionStorage.store) {
-      //   var nowLoginUser = JSON.parse(sessionStorage.NowLoginUser);
-      //   var newUserId = nowLoginUser.userUid;
-      //   var oldLogin = JSON.parse(sessionStorage.store);
-      //   // var oldUserId = oldLogin.userModule.userInfo.userUid;
-      //   if (newUserId == oldUserId) {
-      //     _this.$store.replaceState(
-      //       Object.assign({}, _this.$store.state, oldLogin)
-      //     );
-      //     sessionStorage.removeItem("store");
-      //   } else {
-      //     sessionStorage.removeItem("store");
-      //   }
-      // }
-    },
+    
     //退出
     exit() {
       confirm({

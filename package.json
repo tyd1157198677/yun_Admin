@@ -15,6 +15,7 @@
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
     "core-js": "^3.6.4",
+    "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
     "sass": "^1.26.3",
     "terser-webpack-plugin": "^2.3.5",

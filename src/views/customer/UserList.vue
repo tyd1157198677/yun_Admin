@@ -45,7 +45,7 @@
                 <span>
                   <a-button @click.native="showDetail(record)" size="small" type="link">详情</a-button>
                   <a-button @click.native="recharge(record)" size="small" type="link">充值</a-button>
-                  <a-button @click.native="openPrivilege(record)" size="small" type="link" v-has>开特权</a-button>
+                  <a-button @click.native="openPrivilege(record)" size="small" type="link">开特权</a-button>
                   <a-button @click.native="remove(index)" size="small" type="link">删除</a-button>
                 </span>
               </template>

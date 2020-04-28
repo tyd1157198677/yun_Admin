@@ -79,22 +79,19 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.form);
+      console.log(JSON.parse(JSON.stringify(this.form)));
       // console.log(this.$store.state.userinfo);
-      console.log(this.$store);//3
       this.$refs.ruleForm.validate(valid => {
         if (valid) {
           sessionStorage.setItem("userId","12")
           this.$router.push({path:"/home"})
-          // this.$store.dispatch('changeUserInfo',this.loginData.obj.phone )
-          this.$store.dispatch('changeUserInfo','2' )
+          this.$store.dispatch('changeUserInfo','1' )
           console.log( this.$store.getters.getuserinfo)
         } else {
           // console.log("error submit!!");
           return false;
         }
       });
-      
     }
   }
 };

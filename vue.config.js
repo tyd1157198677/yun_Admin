@@ -5,6 +5,16 @@ const path = require("path")
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
+// 解决Vue打包生成chunk-xxx文件过多，导致首页http请求过多
+function recursiveIssuer(m) {
+  if (m.issuer) {
+    return recursiveIssuer(m.issuer);
+  } else if (m.name) {
+    return m.name;
+  } else {
+    return false;
+  }
+}
 module.exports = {
 
   lintOnSave: false, // 是否在保存的时候检查
@@ -67,8 +77,7 @@ module.exports = {
     } else {
       //   为开发环境配置环境
       //  设置服务器代理
-      config
-        .devServer
+      config.devServer
         .proxy({
           '/api': { //用这个路径代理目标服务器地址
             target: 'http://localhost:8080', //目标服务器地址
@@ -81,14 +90,13 @@ module.exports = {
           }
         })
         .end();
-      config
-        .resolve
-        .alias
+      config.resolve.alias
         .set("@", resolve("src")) //设置路径简写
         .set("@img", resolve("src/assets/img"))
         .set("@css", resolve("src/assets/styles/css"))
         .set("@scss", resolve("src/assets/styles/scss"))
         .end()
     }
+    
   }
 }

@@ -249,13 +249,13 @@ export default {
   },
   created() {
     this.getUSerDetail();
+    console.log(this.$route.meta.title);
   },
   methods: {
     getUSerDetail() {
       if (this.$route.query.info) {
         this.ruleForm = this.$route.query.info;
-        this.ruleForm.tequan_user =
-          this.ruleForm.tequan_user == "是" ? true : false;
+        this.ruleForm.tequan_user =this.ruleForm.tequan_user == "是" ? true : false;
         this.ruleForm.sex = this.ruleForm.sex == "男" ? "1" : "2";
       }
     },
@@ -270,9 +270,13 @@ export default {
       this.previewImage = file.url || file.preview;
       this.previewVisible = true;
     },
-    handleChange({ file, fileList }) {
-      // console.log(file.status);
+    handleChange({file, fileList }) {
+      console.log(file.status);
+      if (file.status==="done") {
+        this.$message.success('上传成功!')
+      }
       this.fileList = [file];
+      
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
