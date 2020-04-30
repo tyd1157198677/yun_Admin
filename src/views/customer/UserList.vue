@@ -761,7 +761,7 @@ export default {
 <style lang="less" scoped>
 .userList {
   width: 100%;
-  background-color: #fff;
+  // background-color: #fff;
   .header {
     width: 100%;
 
