@@ -48,13 +48,17 @@
             <a-icon type="caret-down" @click="e => e.preventDefault()" />
             <a-menu slot="overlay" style="margin-top:15px;width:150px;margin-right:-50px">
               <a-menu-item>
-                <a href="javascript:;">个人中心</a>
+                <a href="javascript:;">{{username}}</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;">设置</a>
+                <a href="javascript:;">{{useraccount}}</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:;" @click="exit">退出</a>
+                <div style="height:1px;background-color:#D7D7D7"></div>
+              </a-menu-item>
+              <a-menu-item @click="exit">
+                <img src="../assets/img/icon_tcdl.png">
+                <a href="javascript:;"  style="display:inline">退出登录</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -78,6 +82,8 @@ export default {
     return {
       routers: "", //面包屑路径
       collapsed: false,
+      username:"二虎",
+      useraccount:"1157198677",
       layoutList: [
         {
           id: "1",
@@ -245,10 +251,9 @@ export default {
     }
   }
   #main {
-    // margin: 1.8% 1.8% 0% 1.8%;
     margin: 18px 24px;
     min-width: 1200px;
-    background-color: #f5f7faff;
+    // background-color: #f5f7faff;
   }
 }
 </style>

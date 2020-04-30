@@ -7,27 +7,18 @@
             <a-button class="header_top" size="large" type="primary" @click="addUser">添加用户</a-button>
             <div class="header_bottom">
               <div class="search_left">
-                <a-select class="select_identity" size="large" placeholder="身份">
-                  <a-select-option value="lucy">Lucy</a-select-option>
-                  <a-select-option value="disabled">Disabled</a-select-option>
-                  <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                <a-select class="select_identity" size="large" placeholder="身份" @change="changeIdentity">
+                  <a-select-option :value="item.id" v-for="item in identity" :key="item.id">{{item.value}}</a-select-option>
                 </a-select>
-
-                <a-select class="select_logonmode" size="large" placeholder="注册方式">
+                <a-select class="select_logonmode" size="large" placeholder="注册方式" @change="changeZcStyle">
                   >
-                  <a-select-option value="lucy">Lucy</a-select-option>
-                  <a-select-option value="disabled">Disabled</a-select-option>
-                  <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                  <a-select-option  :value="item.id" v-for="item in zcStyle" :key="item.id" >{{item.value}}</a-select-option>
                 </a-select>
-
-                <a-select class="select_attribution" size="large" placeholder="归属">
+                <a-select class="select_attribution" size="large" placeholder="归属" @change="changeAttribution">
                   >
-                  <a-select-option value="lucy">Lucy</a-select-option>
-                  <a-select-option value="disabled">Disabled</a-select-option>
-                  <a-select-option value="Yiminghe">yiminghe</a-select-option>
+                  <a-select-option  :value="item.id" v-for="item in attribution" :key="item.id">{{item.value}}</a-select-option>
                 </a-select>
               </div>
-
               <div class="search_right">
                 <a-input class="search_input" size="large" v-model="queryInfo" placeholder="用户名/手机号/备注">
                   <a-icon slot="prefix" type="search" style="fontSize:15px;color:#909399FF" />
@@ -37,7 +28,7 @@
               </div>
             </div>
           </div>
-          <!-- 表单展示区 -->
+          <!-- 表单展示区 这是一个问题 怎么过滤时间呢-->
           <div class="body">
             <a-table :columns="columns" :dataSource="data" :pagination="false" rowKey="key">
               <!-- slot-scope="text, record, index"是给事件传入三个参数，record为下面点击的const data中的对应对象，index为点击的index-->
@@ -526,6 +517,21 @@ export default {
           note: "--"
         }
       ],
+      identity:[//身份
+        {id:1,value:'admin'},
+        {id:2,value:'管理员'},
+        {id:3,value:'会员'}
+      ],
+      zcStyle:[//注册方式
+        {id:1,value:'app'},
+        {id:2,value:'微信'},
+        {id:3,value:'支付宝'}
+      ],
+      attribution:[//归属
+        {id:1,value:'admin'},
+        {id:2,value:'管理员'},
+        {id:3,value:'会员'}
+      ],
       queryInfo:"",//搜索信息
       keys:"1",//用户还是黑名单
       //分页
@@ -583,7 +589,6 @@ export default {
       //特权窗口
       privilegeForm: {
         privilegeType: "yearPri", //特权类型
-        
         data: "", //有效期
         trialTime: "", //试用时间
         yearPri: "", //开通价格
@@ -623,6 +628,19 @@ export default {
       this.$router.push({
         path: "AddUser"
       });
+    },
+    //身份下拉框
+    changeIdentity(value){
+      console.log(value);
+      
+    },
+    //注册方式下拉
+    changeZcStyle(value){
+      console.log(value);
+    },
+    //归属下拉
+    changeAttribution(value){
+      console.log(value);
     },
     //搜索
     searchRes(info) {
@@ -743,6 +761,7 @@ export default {
 <style lang="less" scoped>
 .userList {
   width: 100%;
+  background-color: #fff;
   .header {
     width: 100%;
 
